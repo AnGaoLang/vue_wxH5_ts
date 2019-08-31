@@ -1,0 +1,71 @@
+$zero: 0;
+$black: #000;
+$bigRed: #c72930;
+$ruleTitleRed: #d53c42;
+$followBg: #f9dac1;
+$close: #facb9a;
+$orangeTips: #e98330; 
+
+.fm_hy {
+  font-family: 'HYQuanTangShiJ';
+}
+
+.fm_pf {
+  font-family: 'PingFang';
+}
+
+.pr {
+  position: relative;
+}
+
+.pa {
+  position: absolute;
+}
+
+.pa_mid {
+  @extend .pa;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.pf {
+  position: fixed;
+}
+
+.pfFull {
+  @extend .pf;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.blo {
+  display: block;
+}
+
+.iblo {
+  display: inline-block;
+}
+
+.mAu {
+  margin: auto;
+}
+
+.w100 {
+  width: 100%;
+}
+
+.h100 {
+  height: 100%;
+}
+
+.wh100 {
+  @extend .w100;
+  @extend .h100;
+}
+
+.br5 {
+  border-radius: 5px;
+}
