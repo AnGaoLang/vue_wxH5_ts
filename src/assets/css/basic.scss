@@ -10,3 +10,16 @@ html,body {
   @extend .wh100;
   overflow: hidden;
 }
+
+.fl {
+  float: left;
+}
+
+.clearFix {
+  &:after, &:before {
+    content: ' ';
+    display: block;
+    clear: both;
+    overflow: hidden;
+  }
+}

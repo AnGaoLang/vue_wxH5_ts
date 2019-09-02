@@ -54,6 +54,19 @@
       </template>
     </pop-up>
 
+    <pop-up :show="resultShow">
+      <template v-slot:main>
+        <div class="popup_result">
+          <div class="result_bg">
+            <img src="@/assets/img/main/result.png">
+            <p>恭喜你！获得<span>777楼币</span>！</p>
+            <p>（于1~2个工作日内到账）</p>
+          </div>
+          <div class="close" @click="resultShow = false">关闭</div>
+        </div>
+      </template>
+    </pop-up>
+
   </div>
 </template>
 
@@ -71,7 +84,7 @@ export default Vue.extend({
   name: 'home',
   data () {
     return {
-      stage: 1,
+      stage: 0,
       ruleTitle: [
         require("../assets/img/main/hhsf_title.png"),
         require("../assets/img/main/zmzg_title.png"),
@@ -80,6 +93,7 @@ export default Vue.extend({
       isFollow: true,
       showFol: false,
       showRule: false,
+      resultShow: false,
       btnList: [
         {
           class: 'btn_hhsf',
@@ -246,14 +260,45 @@ export default Vue.extend({
   
   .close {
     @extend .mAu;
-    width: 3.6rem;
-    height: 0.78rem;
-    line-height: 0.78rem;
-    background: url('../assets/img/main/close.png') 0 0/100% 100% no-repeat;
     @extend .fm_pf;
-    font-size: 0.32rem;
+    width: 3.6rem;
+    @extend .closeWH;
+    background: url('../assets/img/main/close.png') 0 0/100% 100% no-repeat;
     color: $close;
-    text-align: center;
   }
 
+  .popup_result {
+    @extend .pa_mid;
+    width: 6.05rem;
+    height: 7.8rem;
+    .close {
+      @extend .pa;
+      left: 50%;
+      transform: translate(-50%, 100%);
+      bottom: 1rem;
+      color: $resultClose;
+      background: url('../assets/img/main/result_close.png') 0 0/100% 100% no-repeat;
+    }
+  }
+
+  .result_bg {
+      padding: 0.55rem 0.38rem 0.38rem;
+      width: 6.05rem;
+      height: 6.05rem;
+      background: url('../assets/img/main/result_bg.png') 0 0/100% 100% no-repeat;
+      & > img {
+        @extend .blo;
+        @extend .w100;
+        height: auto;
+      }
+      & > p{
+        font-size: 0.4rem;
+        color: $black;
+        line-height: 0.7rem;
+        text-align: center;
+        & > span {
+          color: $ruleTitleRed;
+        }
+      }
+    }
 </style>

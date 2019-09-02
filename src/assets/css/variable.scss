@@ -1,10 +1,14 @@
 $zero: 0;
+$white: #fff;
 $black: #000;
 $bigRed: #c72930;
 $ruleTitleRed: #d53c42;
 $followBg: #f9dac1;
 $close: #facb9a;
-$orangeTips: #e98330; 
+$resultClose: #b26c3c;
+$orangeTips: #e98330;
+$LDDot: #f8b551;
+$winTop: #febe81;
 
 .fm_hy {
   font-family: 'HYQuanTangShiJ';
@@ -12,6 +16,10 @@ $orangeTips: #e98330;
 
 .fm_pf {
   font-family: 'PingFang';
+}
+
+.fm_ss {
+  font-family: "SourceHanSansCN";
 }
 
 .pr {
@@ -35,6 +43,14 @@ $orangeTips: #e98330;
 
 .pfFull {
   @extend .pf;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.paFull {
+  @extend .pa;
   top: 0;
   right: 0;
   bottom: 0;
@@ -68,4 +84,12 @@ $orangeTips: #e98330;
 
 .br5 {
   border-radius: 5px;
+}
+
+.closeWH {
+  width: 3.6rem;
+  height: 0.78rem;
+  line-height: 0.78rem;
+  font-size: 0.32rem;
+  text-align: center;
 }

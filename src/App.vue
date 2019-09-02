@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <router-view/>
+    <transition :name="transName">
+      <router-view/>
+    </transition>
   </div>
 </template>
 
@@ -8,6 +10,11 @@
   import Vue from 'vue';
   export default Vue.extend({
      name: 'app',
+     data () {
+       return {
+         transName: 'slide_left'
+       }
+     }
   });
 </script>
 
@@ -19,5 +26,10 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: $bigRed;
+}
+
+.slide_left-leave-active, .slide_left-leave-to {
+  opacity: 0;
+  transition: 0.5s;
 }
 </style>
