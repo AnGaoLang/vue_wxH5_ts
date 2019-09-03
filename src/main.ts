@@ -5,6 +5,7 @@ import store from './store';
 import popUp from './components/popup.vue';
 import '@/utils/rem.js';
 import '@/assets/css/basic.scss';
+import '@/assets/css/animate.scss';
 
 Vue.config.productionTip = false;
 

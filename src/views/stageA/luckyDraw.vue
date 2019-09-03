@@ -2,8 +2,15 @@
   <div class="stageA_container">
     <div class="top_a">
       <div class="tree" @click="luckyDraw">
+        <img class="tree_main" src="@/assets/img/stageA/tree.png">
+        <img class="tree_board_com tree_boardA" src="@/assets/img/stageA/tree_boardA.png">
+        <img class="tree_board_com tree_boardB" src="@/assets/img/stageA/tree_boardB.png">
+        <img class="tree_board_com tree_boardC" src="@/assets/img/stageA/tree_boardC.png">
+        <img class="tree_board_com tree_boardD" src="@/assets/img/stageA/tree_boardA.png">
+        <img class="tree_board_com tree_boardE" src="@/assets/img/stageA/tree_boardA.png">
+        <img class="tree_board_com tree_boardF" src="@/assets/img/stageA/tree_boardA.png">
         <div class="tree_click clearFix">
-          <img class="fl" src="@/assets/img/stageA/click.png">
+          <img class="fl hand" src="@/assets/img/stageA/click.png">
           <div class="fl">
             <p>点击心愿树</p>
             <p>收集祝福卡</p>
@@ -38,9 +45,10 @@
             </span>
           </div>
           <div class="win_mid">
-            <img class="win_board" src="@/assets/img/stageA/win_lb.png">
+            <img src="@/assets/img/stageA/win_lb.png">
+            <!-- <img class="win_board" src="@/assets/img/stageA/win_lb.png"> -->
           </div>
-          <div class="close" @click="showFol = false">关闭</div>
+          <div class="close" @click="wining.bool = false">关闭</div>
         </div>
       </template>
     </pop-up>
@@ -57,7 +65,7 @@ export default Vue.extend({
       treeBoard: [1, 1, 1, 1, 1],
       isFly: false,
       wining: {
-        bool: true
+        bool: false
       },
     }
   },
@@ -82,6 +90,7 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+
 .stageA_container {
   @extend .h100;
   padding-top: 0.85rem;
@@ -101,23 +110,12 @@ export default Vue.extend({
   margin-left: 0.88rem;
   width: 6.1rem;
   height: 7.15rem;
-  background: url('../../assets/img/stageA/tree.png') 0 0/100% 100% no-repeat;
 }
 
-.tree_click {
-  @extend .pa;
-  right: 0.1rem;
-  bottom: 1.8rem;
-  font-size: 0.18rem;
-  color: $white;
-  & > img {
-    width: 1.1rem;
-    height: 1.1rem;
-    animation: click 1.5s linear infinite alternate;
-  }
-  & > div {
-    margin: 0.8rem 0 0 0.15rem;
-  }
+.tree_main {
+  @extend .pr;
+  @extend .wh100;
+  z-index: 9;
 }
 
 .tree_board_container {
@@ -199,10 +197,6 @@ export default Vue.extend({
   }
 }
 
-.fly {
-  animation: fly 2.5s linear 1;
-}
-
 .win {
   @extend .pa_mid;
   padding-top: 1.05rem;
@@ -247,24 +241,6 @@ export default Vue.extend({
   }
   & > .win_board {
     margin-left: -0.7rem;
-  }
-}
-
-@keyframes click {
-  from {
-    transform: scale(1.1);
-  };
-  to {
-    transform: scale(0.8);
-  };
-}
-
-@keyframes fly{
-  0% {
-    transform: translate(0, 0);
-  }
-  100% {
-    transform: translate(300%, -250%);
   }
 }
 </style>

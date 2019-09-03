@@ -72,6 +72,8 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { isSubscribe } from '@/utils/service';
+import { getQueryString } from '@/utils/util';
 
 interface stageBtn {
   class: string,
@@ -82,9 +84,9 @@ interface stageBtn {
 
 export default Vue.extend({
   name: 'home',
-  data () {
+  data ():any {
     return {
-      stage: 0,
+      // stage: this.stage,
       ruleTitle: [
         require("../assets/img/main/hhsf_title.png"),
         require("../assets/img/main/zmzg_title.png"),
@@ -97,7 +99,7 @@ export default Vue.extend({
       btnList: [
         {
           class: 'btn_hhsf',
-          fullLock: false,
+          fullLock: true,
           halfLock: false,
           link: '/luckyDraw',
         },
@@ -116,11 +118,68 @@ export default Vue.extend({
       ],
     }
   },
+  inject: ['stage'],
+  // computed: {
+  //   stage (): number {
+  //     return this.stage
+  //   }
+  // },
   mounted () {
-    this.showFol = !this.isFollow;
-    this.showRule = !this.showFol;
+    this.init();
   },
   methods: {
+    async init(): Promise<any> {
+      const openid = getQueryString('openid');
+      if (openid) {
+        const obj = await isSubscribe(openid);
+        this.isFollow = obj.isSubscribe;
+        this.showFol = !this.isFollow;
+        this.showRule = !this.showFol;
+      } else {
+        this.isFollow = false;
+        this.showFol = !this.isFollow;
+        this.showRule = !this.showFol;
+      };
+      this.btnMask();
+    },
+    btnMask () {
+      this.btnList.forEach((item: stageBtn, index) => {
+        switch (this.stage) {
+          case 0:
+            if (!index) {
+              this.btnList[index].fullLock = false;
+              this.btnList[index].halfLock = false;
+            } else {
+              this.btnList[index].fullLock = false;
+              this.btnList[index].halfLock = true;
+            }
+            break;
+          case 1:
+            this.btnList[0].fullLock = true;
+            this.btnList[0].halfLock = false;
+            this.btnList[1].fullLock = false;
+            this.btnList[1].halfLock = false;
+            this.btnList[2].fullLock = false;
+            this.btnList[2].halfLock = true;
+            break;
+          case 2:
+            this.btnList[0].fullLock = true;
+            this.btnList[0].halfLock = false;
+            this.btnList[1].fullLock = true;
+            this.btnList[1].halfLock = false;
+            this.btnList[2].fullLock = false;
+            this.btnList[2].halfLock = false;
+            break;
+          case 3:
+            this.btnList[index].fullLock = true;
+            this.btnList[index].halfLock = false;
+            break;
+        }
+      });
+      if (this.btnList.every((item: stageBtn) => item.fullLock)) {
+        this.showRule = false;
+      }
+    },
     goToStage (item:stageBtn): void {
       if (item.fullLock || item.halfLock) return;
       if (!this.isFollow) {
@@ -176,12 +235,15 @@ export default Vue.extend({
 
   .btn_com {
     @extend .iblo;
+    @extend .pr;
     margin-right: .5rem;
     width: 1.5rem;
     height: 2.1rem;
     & > img {
-      @extend .iblo;
+      @extend .pa;
       @extend .w100;
+      top: 0;
+      left: 0;
     }
   }
 

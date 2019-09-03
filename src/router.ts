@@ -19,8 +19,8 @@ const router = new Router({
     },
     {
       path: '/map',
-      name: 'map',
-      component: () => import(/* webpackChunkName: "map" */ './views/stageA/map.vue'),
+      name: 'stageAmap',
+      component: () => import(/* webpackChunkName: "staeAmap" */ './views/stageA/map.vue'),
     },
   ],
 });
