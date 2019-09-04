@@ -1,11 +1,10 @@
 module.exports = {
   devServer:{
-    open: true, // 自动打开浏览器
-    // 代理
+    open: true,
     proxy: {
       // 后端本地
       '/nd': {
-        target: 'http://192.168.2.110:9100',
+        target: 'http://192.168.2.111:9100',
         changeOrigin: true,
         ws: true
       }
@@ -15,8 +14,7 @@ module.exports = {
     devtool: 'source-map'
   },
   css: {
-    sourceMap: true, 
-    // 全局引入scss
+    sourceMap: true,
     loaderOptions: {
       sass: {
         data: `@import "~@/assets/css/variable.scss"`

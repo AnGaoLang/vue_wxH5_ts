@@ -30,24 +30,26 @@
 
     <pop-up :show="showRule">
       <template v-slot:main>
-        <div class="popup_rule">
-          <img class="popup_title" :src="ruleTitle[stage]">
-          <div class="popup_info" v-if="stage == 0">
+        <div class="popup_rule" :style="{'padding-top': stages.value == 1 ? '0.8rem' : '1.18rem'}">
+          <img class="popup_title" :src="ruleTitle[stages.value]">
+          <div class="popup_info" v-if="stages.value == 0">
             <p>1. <span>活动时间：9月13日-9月19日</span></p>
             <p>2. 活动每天进入【黄鹤送福】页面可随机拆开3张福签，福签隐藏着超多福利哦！大额楼币、楼楼周边还有祝福卡。</p>
-            <p>3.每获得5张不同的祝福卡，即可获得一只金色黄鹤，移动黄鹤至地图上点亮，即可获得瓜分百万楼币的机会！</p>
+            <p>3.每获得5张不同的祝福卡，即可获得一只金色黄鹤，移动黄鹤至地图上点亮，即可获得<span class="big_red">共享8888888</span>楼币的机会！</p>
             <p class="rule_tips">* 活动期间，用户在扫码验真获取诚信福利时，也有机会获得祝福卡哦！</p>
           </div>
-          <div class="popup_info" v-if="stage == 1">
+          <div class="popup_info" v-if="stages.value == 1">
             <p>1. <span>活动时间：9月20日-9月26日</span></p>
             <p>2.点击地图任意位置即可获取“我和我的祖国”建国70周年限量版定制的海报模板，三种款式选择。</p>
             <p>3.上传照片，即可制作“我和我的祖国”建国70周年限量版定制海报，活动结束后，通过审核的照片可以参与下一期【圆梦中国】投票活动。</p>
             <p>4.可随时删除或重新上传照片，可多次生成海报但仅有一张可以参与【圆梦中国】活动哦！</p>
+            <p class="rule_tips" style="margin-top:0;">* 制作海报的照片仅在本次活动中使用，不会令做他用</p>
           </div>
-          <div class="popup_info" v-if="stage == 2">
+          <div class="popup_info" v-if="stages.value == 2">
             <p>1. <span>活动时间：9月27日-10月7日</span></p>
             <p>2. 每位用户每天可进入活动页投出3票，须投给三个不同作品；</p>
             <p>3. 票数达到100即可参与“圆梦礼包”抽奖活动，惊喜大礼送不停！</p>
+            <p class="rule_tips">* 制作海报的照片仅在本次活动中使用，不会令做他用</p>
           </div>
           <div class="close" @click="showRule = false">关闭</div>
         </div>
@@ -84,9 +86,9 @@ interface stageBtn {
 
 export default Vue.extend({
   name: 'home',
-  data ():any {
+  data (): any {
     return {
-      // stage: this.stage,
+      openid: '',
       ruleTitle: [
         require("../assets/img/main/hhsf_title.png"),
         require("../assets/img/main/zmzg_title.png"),
@@ -99,52 +101,44 @@ export default Vue.extend({
       btnList: [
         {
           class: 'btn_hhsf',
-          fullLock: true,
-          halfLock: false,
+          fullLock: false,
+          halfLock: true,
           link: '/luckyDraw',
         },
         {
           class: 'btn_zmzg',
-          fullLock: true,
-          halfLock: false,
+          fullLock: false,
+          halfLock: true,
           link: '',
         },
         {
           class: 'btn_ymzg',
-          fullLock: true,
-          halfLock: false,
+          fullLock: false,
+          halfLock: true,
           link: '',
         }
       ],
     }
   },
-  inject: ['stage'],
-  // computed: {
-  //   stage (): number {
-  //     return this.stage
-  //   }
-  // },
+  inject: ['stages'],
   mounted () {
-    this.init();
+    this.getSubStatus();
+    this.btnMask();
   },
   methods: {
-    async init(): Promise<any> {
-      const openid = getQueryString('openid');
-      if (openid) {
-        const obj = await isSubscribe(openid);
-        this.isFollow = obj.isSubscribe;
-        this.showFol = !this.isFollow;
-        this.showRule = !this.showFol;
-      } else {
-        this.isFollow = false;
-        this.showFol = !this.isFollow;
-        this.showRule = !this.showFol;
-      };
-      this.btnMask();
+    async getSubStatus(): Promise<any> {
+      this.openid = getQueryString('openid');
+      const obj = await isSubscribe(this.openid);
+      this.isFollow = obj ? obj.isSubscribe : false;
+      this.showFol = !this.isFollow;
+      this.showRule = !this.showFol;
     },
     btnMask () {
-      this.btnList.forEach((item: stageBtn, index) => {
-        switch (this.stage) {
+      this.btnList.forEach((item: stageBtn, index: number) => {
+        switch (this.stages.value) {
+          case -1:
+            this.showRule = false;
+            break;
           case 0:
             if (!index) {
               this.btnList[index].fullLock = false;
@@ -186,9 +180,9 @@ export default Vue.extend({
         this.showFol = true;
         return;
       };
-      this.$router.push(item.link);
+      this.$router.push(`${item.link}?openid=${this.openid}`);
     }
-  }
+  },
 });
 </script>
 
@@ -317,6 +311,9 @@ export default Vue.extend({
     & > .rule_tips {
       margin-top: 0.6rem;
       color: $orangeTips;
+    }
+    .big_red{
+      color: $bigRed;
     }
   }
   

@@ -39,16 +39,23 @@
       <template v-slot:main>
         <div class="win">
           <div class="win_title">
-            <span>
-              <p>恭喜你！获得辉煌祝福</p>
-              <p>集齐5种祝福语即可放飞祝福</p>
+            <span v-show="wining.type == 1">
+              <p>恭喜你！获得{{wining.prizeName}}祝福</p>
+              <p class="wining_board">集齐5种祝福语即可放飞祝福</p>
+            </span>
+            <span v-show="wining.type == 2">
+              <p class="wining_coin">恭喜你！获得{{wining.prizeName}}</p>
+            </span>
+            <span v-show="wining.type == 3">
+              <p>恭喜你！成功获得</p>
+              <p class="wining_coin">楼楼家的福袋奖励!</p>
             </span>
           </div>
           <div class="win_mid">
-            <img src="@/assets/img/stageA/win_lb.png">
-            <!-- <img class="win_board" src="@/assets/img/stageA/win_lb.png"> -->
+            <img v-if="wining.type == 1" class="win_board" :src="wining.imgUrl">
+            <img v-else :src="wining.imgUrl">
           </div>
-          <div class="close" @click="wining.bool = false">关闭</div>
+          <div class="close" @click="wining.bool = false">{{wining.closeText}}</div>
         </div>
       </template>
     </pop-up>
@@ -57,17 +64,32 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { getQueryString } from '@/utils/util';
+import { luckyDrawInfo, luckyDraw } from '@/utils/service';
+
+type isSubscribe = {
+  isSubscribe: boolean
+}
 
 export default Vue.extend({
   name: 'luckyDraw',
-  data () {
+  data (): any {
     return {
-      treeBoard: [1, 1, 1, 1, 1],
+      openid: '',
+      treeBoard: [0, 0, 0, 0, 0],
       isFly: false,
       wining: {
-        bool: false
+        bool: false,
+        type: 1,
+        imgUrl: '',
+        prizeName: '',
+        closeText: ''
       },
     }
+  },
+  inject: ['stages'],
+  mounted () {
+    this.getPageInfo();
   },
   computed: {
     isGoMap (): boolean {
@@ -75,15 +97,52 @@ export default Vue.extend({
     }
   },
   methods:{
-    luckyDraw () {
-      console.log(1);
+    async getPageInfo (isloading: boolean = true) {
+      this.openid = getQueryString('openid');
+      const obj = await luckyDrawInfo(this.openid, isloading);
+      if (obj) {
+        this.goIndex(obj);
+        const keys = ['focaA', 'focaB', 'focaC', 'focaD', 'focaE'];
+        const array = [] as number[];
+        keys.forEach((item: string, index: number) => {
+          array[index] = obj[item];
+        });
+        this.treeBoard = array;
+      }
+    },
+    async luckyDraw () {
+      const obj = await luckyDraw({openid: this.openid});
+      if (obj) {
+        this.goIndex(obj);
+        this.wining.bool = true;
+        this.wining.type = obj.prizeType;
+        this.wining.imgUrl = obj.imgUrl;
+        switch (obj.prizeType) {
+          case 1:
+            this.wining.prizeName = obj.prizeName;
+            this.wining.closeText = '收下祝福';
+            break;
+          case 2:
+            this.wining.prizeName = obj.prizeName;
+            this.wining.closeText = '收下奖励';
+            break;
+          case 3:
+            this.wining.prizeName = obj.prizeName;
+            this.wining.closeText = '收下奖励';
+            break;
+        }
+        this.getPageInfo(false);
+      };
     },
     goMap () {
       if (!this.isGoMap) return;
       this.isFly = true;
       setTimeout(() => {
-        this.$router.push('/map');
+        this.$router.push(`/map?openid=${this.openid}`);
       },2000)
+    },
+    goIndex (obj: isSubscribe) {
+      if (!obj.isSubscribe) this.$router.replace(`/index?openid=${this.openid}`);
     }
   }
 })
@@ -219,6 +278,7 @@ export default Vue.extend({
 .win_title {
   @extend .fm_ss;
   @extend .w100;
+  margin-top: 0.1rem;
   display: table;
   height: 1.6rem;
   line-height: 0.6rem;
@@ -228,10 +288,15 @@ export default Vue.extend({
     display: table-cell;
     vertical-align: middle;
   }
-  & p:last-child {
+  .wining_board {
     font-size: 0.28rem;
   }
+  .wining_coin {
+    font-size: 0.38rem;
+  }
 }
+
+
 
 .win_mid {
   padding-top: 0.75rem;

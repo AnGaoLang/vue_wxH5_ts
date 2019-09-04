@@ -8,7 +8,7 @@ const router = new Router({
   base: process.env.BASE_URL,
   routes: [
     {
-      path: '/',
+      path: '/index',
       name: 'home',
       component: () => import(/* webpackChunkName: "home" */ './views/home.vue'),
     },

@@ -3,7 +3,6 @@
     <div class="map">
       <img v-show="mapGif" class="map_light" src="@/assets/img/stageA/map.gif">
       <img v-show="mapLight" class="map_light" src="@/assets/img/stageA/map_light.png">
-      
       <img class="map_he" src="@/assets/img/stageA/he.gif">
     </div>
   </div>
@@ -21,15 +20,13 @@ export default Vue.extend({
     }
   },
   mounted () {
-    window.onload = () => {
-      setTimeout(() => {
-        this.mapGif = true;
-        // setTimeout(() => {
-        //   this.mapGif = false;
-        //   this.mapLight = true;
-        // }, 1500)
-      }, 2000)
-    }
+    setTimeout(() => {
+      this.mapGif = true;
+      // setTimeout(() => {
+      //   this.mapGif = false;
+      //   this.mapLight = true;
+      // }, 1500)
+    }, 2000)
   }
 })
 </script>
