@@ -30,9 +30,9 @@
     },
     methods: {
       initStage () {
-        const nowDate = new Date().getTime(); 
-        const stageATime = new Date('2019-9-3 00:00:00').getTime();
-        const stageBTime = new Date('2019-9-20 00:00:00').getTime();
+        const nowDate = new Date().getTime();
+        const stageATime = new Date('2019-9-1 00:00:00').getTime();
+        const stageBTime = new Date('2019-9-3 00:00:00').getTime();
         const stageCTime = new Date('2019-9-27 00:00:00').getTime();
         const stageEnd = new Date('2019-10-8 00:00:00').getTime();
         if (nowDate >= stageATime && nowDate < stageBTime) {

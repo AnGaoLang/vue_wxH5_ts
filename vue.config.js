@@ -4,12 +4,13 @@ module.exports = {
     proxy: {
       // 后端本地
       '/nd': {
-        target: 'http://192.168.2.111:9100',
+        target: 'http://hhlqr.whcewei.com/',
         changeOrigin: true,
         ws: true
       }
     }
   },
+  publicPath: process.env.NODE_ENV === 'production' ? '/nd/' : '/',
   configureWebpack: {
     devtool: 'source-map'
   },

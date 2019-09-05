@@ -1,39 +1,39 @@
 import Axios from 'axios';
 import { VM } from '../main';
 
-// const baseUrl = 'http://192.168.2.110:9100';
+// const baseUrl = 'http://hhlqr.whcewei.com/';
 const baseUrl = '';
 
 
 Axios.interceptors.request.use(
-  config => {
+  (config) => {
     return config;
   },
-  error => {
+  (error) => {
     alert(error);
     return Promise.reject(error);
   }
 );
 
 Axios.interceptors.response.use(
-  response => {
-    if (response.data.code && response.data.code == 200) {
+  (response) => {
+    if (response.data.code && response.data.code === 200) {
       VM.$loading.hide();
       return response.data.data;
     } else {
-      VM.$loading.hide(); 
+      VM.$loading.hide();
       alert(response.data.msg);
       return null;
     }
   },
-  error => {
+  (error) => {
     VM.$loading.hide();
     alert(error);
     return Promise.reject(error);
   }
 );
 
-function post (url: string, data: any, isloading :boolean = true) {
+function post (url: string, data: any, isloading: boolean = true) {
   isloading = isloading ? isloading : false;
   isloading && VM.$loading.show();
   return Axios({
@@ -54,13 +54,13 @@ function post (url: string, data: any, isloading :boolean = true) {
   );
 }
 
-function get (url: string, data?: object, isloading :boolean = true) {
+function get (url: string, data?: object, isloading: boolean = true) {
   isloading = isloading ? isloading : false;
   isloading && VM.$loading.show();
   return Axios({
     url: baseUrl + url,
     method: 'get',
-    data: data,
+    data: JSON.stringify(data),
     headers: {
       'X-Requested-With': 'XMLHttpRequest',
       'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
@@ -75,4 +75,4 @@ function get (url: string, data?: object, isloading :boolean = true) {
   );
 }
 
-export { post, get };
+export { post, get }

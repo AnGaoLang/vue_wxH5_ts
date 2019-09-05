@@ -67,7 +67,7 @@ import Vue from 'vue';
 import { getQueryString } from '@/utils/util';
 import { luckyDrawInfo, luckyDraw } from '@/utils/service';
 
-type isSubscribe = {
+interface IsSubscribe {
   isSubscribe: boolean
 }
 
@@ -96,7 +96,7 @@ export default Vue.extend({
       return this.treeBoard.every((item: number) => item > 0);
     }
   },
-  methods:{
+  methods: {
     async getPageInfo (isloading: boolean = true) {
       this.openid = getQueryString('openid');
       const obj = await luckyDrawInfo(this.openid, isloading);
@@ -139,10 +139,10 @@ export default Vue.extend({
       this.isFly = true;
       setTimeout(() => {
         this.$router.push(`/map?openid=${this.openid}`);
-      },2000)
+      }, 2000)
     },
-    goIndex (obj: isSubscribe) {
-      if (!obj.isSubscribe) this.$router.replace(`/index?openid=${this.openid}`);
+    goIndex (obj: IsSubscribe) {
+      if (!obj.isSubscribe) this.$router.replace(`/home?openid=${this.openid}`);
     }
   }
 })

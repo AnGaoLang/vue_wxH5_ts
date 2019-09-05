@@ -77,7 +77,7 @@ import Vue from 'vue';
 import { isSubscribe } from '@/utils/service';
 import { getQueryString } from '@/utils/util';
 
-interface stageBtn {
+interface StageBtn {
   class: string,
   fullLock: boolean,
   halfLock: boolean,
@@ -90,9 +90,9 @@ export default Vue.extend({
     return {
       openid: '',
       ruleTitle: [
-        require("../assets/img/main/hhsf_title.png"),
-        require("../assets/img/main/zmzg_title.png"),
-        require("../assets/img/main/ymzg_title.png"),
+        require('../assets/img/main/hhsf_title.png'),
+        require('../assets/img/main/zmzg_title.png'),
+        require('../assets/img/main/ymzg_title.png'),
       ],
       isFollow: true,
       showFol: false,
@@ -109,7 +109,7 @@ export default Vue.extend({
           class: 'btn_zmzg',
           fullLock: false,
           halfLock: true,
-          link: '',
+          link: '/map',
         },
         {
           class: 'btn_ymzg',
@@ -126,7 +126,7 @@ export default Vue.extend({
     this.btnMask();
   },
   methods: {
-    async getSubStatus(): Promise<any> {
+    async getSubStatus (): Promise<any> {
       this.openid = getQueryString('openid');
       const obj = await isSubscribe(this.openid);
       this.isFollow = obj ? obj.isSubscribe : false;
@@ -134,7 +134,7 @@ export default Vue.extend({
       this.showRule = !this.showFol;
     },
     btnMask () {
-      this.btnList.forEach((item: stageBtn, index: number) => {
+      this.btnList.forEach((item: StageBtn, index: number) => {
         switch (this.stages.value) {
           case -1:
             this.showRule = false;
@@ -170,11 +170,11 @@ export default Vue.extend({
             break;
         }
       });
-      if (this.btnList.every((item: stageBtn) => item.fullLock)) {
+      if (this.btnList.every((item: StageBtn) => item.fullLock)) {
         this.showRule = false;
       }
     },
-    goToStage (item:stageBtn): void {
+    goToStage (item: StageBtn): void {
       if (item.fullLock || item.halfLock) return;
       if (!this.isFollow) {
         this.showFol = true;

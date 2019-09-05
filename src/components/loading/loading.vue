@@ -18,10 +18,10 @@ export default Vue.extend({
     }
   },
   methods: {
-    show() {
+    show () {
       this.showLoad = true;
     },
-    hide() {
+    hide () {
       this.showLoad = false;
     }
   }
@@ -45,6 +45,9 @@ export default Vue.extend({
 }
 
 .circular {
+  @extend .pa;
+  left: 50%;
+  margin-left: -25px;
   height: 50px;
   width: 50px;
   animation: loading-rotate 2s linear infinite;

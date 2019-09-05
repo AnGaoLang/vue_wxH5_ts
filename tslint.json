@@ -21,5 +21,6 @@
     "trailing-comma": false,
     "space-before-function-paren": [true, "always"],
     "no-unused-expression": false,
+    "curly": false
   }
 }

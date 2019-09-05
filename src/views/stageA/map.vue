@@ -1,10 +1,11 @@
 <template>
-  <div class="map_container">
-    <div class="map">
-      <img v-show="mapGif" class="map_light" src="@/assets/img/stageA/map.gif">
+  <div class="map_container" @click="goStageB">
+    <div :class="['map', mapLight ? 'map_none' : '']">
+      <img v-show="!mapLight && mapGif" class="map_light" src="@/assets/img/stageA/map.gif">
       <img v-show="mapLight" class="map_light" src="@/assets/img/stageA/map_light.png">
-      <img class="map_he" src="@/assets/img/stageA/he.gif">
+      <img v-show="!mapLight" class="map_he" src="@/assets/img/stageA/he.gif">
     </div>
+    <p v-show="mapLight" class="map_bottom">[点击地图，筑梦中国]</p>
   </div>
 </template>
 
@@ -15,6 +16,7 @@ export default Vue.extend({
   name: 'stageAmap',
   data () {
     return {
+      show: false,
       mapGif: false,
       mapLight: false,
     }
@@ -27,6 +29,19 @@ export default Vue.extend({
       //   this.mapLight = true;
       // }, 1500)
     }, 2000)
+  },
+  methods: {
+    goStageB () {
+      if (!this.mapLight) return;
+      this.$router.push('/myWorks')
+    }
+  },
+  beforeRouteEnter: (to, from, next) => {
+    next((vm) => {
+      if (from.path === '/home' && to.path === '/map') {
+        vm.$data.mapLight = true;
+      };
+    });
   }
 })
 </script>
@@ -46,6 +61,9 @@ export default Vue.extend({
   background-size: 100% 100%;
   background-repeat: no-repeat;
   background-image: url('../../assets/img/stageA/map.png');
+  &.map_none {
+    background-image: none;
+  }
 }
 .map_light { 
   @extend .blo;
@@ -59,5 +77,13 @@ export default Vue.extend({
   width: 2rem;
   height: 1.89rem;
   animation: mapFly 2s 1 normal forwards;
+}
+
+.map_bottom {
+  margin: 0.3rem auto 0;
+  font-size: 0.26rem;
+  color: $mapBottom;
+  text-align: center;
+  letter-spacing: 5px;
 }
 </style>
