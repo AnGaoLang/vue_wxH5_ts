@@ -27,9 +27,11 @@
             <span class="num">{{item}}</span>
           </span>
         </div>
-        <div class="go_map" @click="goMap">
-          <img v-if="isGoMap" :class="[isFly ? 'fly' : '']" src="@/assets/img/stageA/he.gif"  ref="bottom">
-          <img v-else src="@/assets/img/stageA/he.png"  ref="bottom">
+        <div class="go_map" @click="goMap" ref="bottom">
+          <div>
+            <img v-if="isGoMap" :class="[isFly ? 'fly' : '']" src="@/assets/img/stageA/he.gif"  >
+            <img v-else src="@/assets/img/stageA/he.png">
+          </div>
           放飞祝福
         </div>
       </div>
@@ -90,7 +92,8 @@ export default Vue.extend({
   inject: ['stages'],
   mounted () {
     this.getPageInfo();
-    this.$refs.bottom.onload = () => {adaptPt(this.$refs.top, this.$refs.bottom, this.$refs.moveTop)};
+    // 当最底部图片加载完成时，在触发 adaptPt
+    this.$nextTick(() => adaptPt(this.$refs.top, this.$refs.bottom, this.$refs.moveTop))
   },
   computed: {
     isGoMap (): boolean {
@@ -163,6 +166,7 @@ export default Vue.extend({
 
 .top_a {
   @extend .w100;
+  padding-top: 1rem;
   height: 10.5rem;
   background: url('../../assets/img/stageA/moon.png') 0 0/100% 100% no-repeat;
 }
@@ -251,11 +255,16 @@ export default Vue.extend({
   font-size: 0.32rem;
   color: $resultClose;
   background: url('../../assets/img/stageA/btn.png') 0 0/100% 100% no-repeat;
-  & > img{
+  & > div {
     @extend .pa;
     top: -0.25rem;
     left: -0.2rem;
     width: 1.75rem;
+    height: 1.85rem;
+  }
+  & img{
+    @extend .blo;
+    @extend .w100;
     height: auto;
   }
 }
