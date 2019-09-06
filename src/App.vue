@@ -1,8 +1,8 @@
 <template>
   <div id="app">
-    <transition name="opacity">
+    <!-- <transition name="opacity"> -->
       <router-view/>
-    </transition>
+    <!-- </transition> -->
   </div>
 </template>
 
@@ -31,10 +31,10 @@
     methods: {
       initStage () {
         const nowDate = new Date().getTime();
-        const stageATime = new Date('2019-9-1 00:00:00').getTime();
-        const stageBTime = new Date('2019-9-3 00:00:00').getTime();
-        const stageCTime = new Date('2019-9-27 00:00:00').getTime();
-        const stageEnd = new Date('2019-10-8 00:00:00').getTime();
+        const stageATime = new Date('2019/9/1 00:00:00').getTime();
+        const stageBTime = new Date('2019/9/13 00:00:00').getTime();
+        const stageCTime = new Date('2019/09/27 00:00:00').getTime();
+        const stageEnd = new Date('2019/10/08 00:00:00').getTime();
         if (nowDate >= stageATime && nowDate < stageBTime) {
           this.stages.value = 0;
         } else if (nowDate >= stageBTime && nowDate < stageCTime) {
@@ -61,6 +61,6 @@
 
 .opacity-leave-active, .opacity-leave-to {
   opacity: 0;
-  transition: 0.5s;
+  transition: 0.4s;
 }
 </style>

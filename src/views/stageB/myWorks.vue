@@ -17,7 +17,7 @@
 <style lang="scss" scoped>
 .mywork_container {
   @extend .wh100;
-  padding: 1.9rem 0.15rem 0.2rem;
+  padding: 1.3rem 0.15rem 0.2rem;
 }
 
 .mywork_border {

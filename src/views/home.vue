@@ -1,11 +1,11 @@
 <template>
-  <div class="home">
+  <div class="home pt_adapt" ref="top">
     <div class="title_main">
       <img class="star" src="@/assets/img/main/star.png">
       <img class="title_top" src="@/assets/img/main/title.png">
       <div class="title_mid">
         <img src="@/assets/img/main/bottom.png">
-        <div class="btn">
+        <div class="btn" ref="bottom">
           <span v-for="item in btnList"
                 :key="item.classs"
                 :class="['btn_com', item.class]"
@@ -51,7 +51,7 @@
             <p>3. 票数达到100即可参与“圆梦礼包”抽奖活动，惊喜大礼送不停！</p>
             <p class="rule_tips">* 制作海报的照片仅在本次活动中使用，不会令做他用</p>
           </div>
-          <div class="close" @click="showRule = false">关闭</div>
+          <div class="close" @click="goStage">关闭</div>
         </div>
       </template>
     </pop-up>
@@ -64,7 +64,7 @@
             <p>恭喜你！获得<span>777楼币</span>！</p>
             <p>（于1~2个工作日内到账）</p>
           </div>
-          <div class="close" @click="resultShow = false">关闭</div>
+          <div class="close" @click="this.resultShow = false;">关闭</div>
         </div>
       </template>
     </pop-up>
@@ -75,7 +75,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { isSubscribe } from '@/utils/service';
-import { getQueryString } from '@/utils/util';
+import { getQueryString, adaptPt } from '@/utils/util';
 
 interface StageBtn {
   class: string,
@@ -88,7 +88,6 @@ export default Vue.extend({
   name: 'home',
   data (): any {
     return {
-      openid: '',
       ruleTitle: [
         require('../assets/img/main/hhsf_title.png'),
         require('../assets/img/main/zmzg_title.png'),
@@ -118,27 +117,24 @@ export default Vue.extend({
           link: '',
         }
       ],
+      currentItem: {}
     }
   },
   inject: ['stages'],
   mounted () {
     this.getSubStatus();
     this.btnMask();
+    this.$nextTick(() => adaptPt(this.$refs.top, this.$refs.bottom));
   },
   methods: {
     async getSubStatus (): Promise<any> {
-      this.openid = getQueryString('openid');
-      const obj = await isSubscribe(this.openid);
+      const obj = await isSubscribe(getQueryString('openid'));
       this.isFollow = obj ? obj.isSubscribe : false;
       this.showFol = !this.isFollow;
-      this.showRule = !this.showFol;
     },
     btnMask () {
       this.btnList.forEach((item: StageBtn, index: number) => {
         switch (this.stages.value) {
-          case -1:
-            this.showRule = false;
-            break;
           case 0:
             if (!index) {
               this.btnList[index].fullLock = false;
@@ -174,13 +170,20 @@ export default Vue.extend({
         this.showRule = false;
       }
     },
+    goStage () {
+      this.showRule = false
+      console.log(this.currentItem)
+      this.$router.push(`${this.currentItem.link}`);
+    },
     goToStage (item: StageBtn): void {
       if (item.fullLock || item.halfLock) return;
       if (!this.isFollow) {
         this.showFol = true;
         return;
-      };
-      this.$router.push(`${item.link}?openid=${this.openid}`);
+      } else {
+        this.showRule = !this.showFol;
+        this.currentItem = item;
+      }
     }
   },
 });
@@ -188,7 +191,7 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
   .home{
-    padding-top: 1.2rem;
+    margin-top: -0.2rem;
     @extend .h100;
   }
 

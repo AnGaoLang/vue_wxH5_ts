@@ -1,20 +1,23 @@
 <template>
-  <div class="map_container" @click="goStageB">
-    <div :class="['map', mapLight ? 'map_none' : '']">
-      <img v-show="!mapLight && mapGif" class="map_light" src="@/assets/img/stageA/map.gif">
-      <img v-show="mapLight" class="map_light" src="@/assets/img/stageA/map_light.png">
-      <img v-show="!mapLight" class="map_he" src="@/assets/img/stageA/he.gif">
+  <div class="map_wrap" ref="top">
+     <div class="map_container" @click="goStageB" ref="moveTop">
+      <div :class="['map', mapLight ? 'map_none' : '']">
+        <img v-show="!mapLight && mapGif" class="map_light" src="@/assets/img/stageA/map.gif">
+        <img v-show="mapLight" class="map_light" src="@/assets/img/stageA/map_light.png">
+        <img v-show="!mapLight" class="map_he" src="@/assets/img/stageA/he.gif">
+      </div>
+      <p class="map_bottom" ref="bottom">{{mapLight ? '[点击地图，筑梦中国]' : ''}}</p>
     </div>
-    <p v-show="mapLight" class="map_bottom">[点击地图，筑梦中国]</p>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
+import { adaptPt } from '@/utils/util';
 
 export default Vue.extend({
   name: 'stageAmap',
-  data () {
+  data (): any {
     return {
       show: false,
       mapGif: false,
@@ -29,6 +32,7 @@ export default Vue.extend({
       //   this.mapLight = true;
       // }, 1500)
     }, 2000)
+    this.$nextTick(() => adaptPt(this.$refs.top, this.$refs.bottom, this.$refs.moveTop));
   },
   methods: {
     goStageB () {
@@ -47,10 +51,13 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-.map_container {
+.map_wrap {
   @extend .wh100;
-  padding-top: 4rem;
-  background: url('../../assets/img/stageA/map_bg.png') 0 0/100% auto no-repeat;
+  background: url('../../assets/img/stageA/map_bg.png') 0 -1.2rem/100% auto no-repeat;
+}
+
+.map_container{
+  padding-top: 2.6rem;
 }
 
 .map {

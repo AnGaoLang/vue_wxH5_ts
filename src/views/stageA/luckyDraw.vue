@@ -1,6 +1,6 @@
 <template>
-  <div class="stageA_container">
-    <div class="top_a">
+  <div class="stageA_container pt_adapt" ref="top">
+    <div class="top_a" ref="moveTop">
       <div class="tree" @click="luckyDraw">
         <img class="tree_main" src="@/assets/img/stageA/tree.png">
         <img class="tree_board_com tree_boardA" src="@/assets/img/stageA/tree_boardA.png">
@@ -28,8 +28,8 @@
           </span>
         </div>
         <div class="go_map" @click="goMap">
-          <img v-if="isGoMap" :class="[isFly ? 'fly' : '']" src="@/assets/img/stageA/he.gif">
-          <img v-else src="@/assets/img/stageA/he.png">
+          <img v-if="isGoMap" :class="[isFly ? 'fly' : '']" src="@/assets/img/stageA/he.gif"  ref="bottom">
+          <img v-else src="@/assets/img/stageA/he.png"  ref="bottom">
           放飞祝福
         </div>
       </div>
@@ -55,7 +55,7 @@
             <img v-if="wining.type == 1" class="win_board" :src="wining.imgUrl">
             <img v-else :src="wining.imgUrl">
           </div>
-          <div class="close" @click="wining.bool = false">{{wining.closeText}}</div>
+          <div class="close" @click="clickFD">{{wining.closeText}}</div>
         </div>
       </template>
     </pop-up>
@@ -64,7 +64,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { getQueryString } from '@/utils/util';
+import { getQueryString, adaptPt } from '@/utils/util';
 import { luckyDrawInfo, luckyDraw } from '@/utils/service';
 
 interface IsSubscribe {
@@ -90,6 +90,7 @@ export default Vue.extend({
   inject: ['stages'],
   mounted () {
     this.getPageInfo();
+    this.$refs.bottom.onload = () => {adaptPt(this.$refs.top, this.$refs.bottom, this.$refs.moveTop)};
   },
   computed: {
     isGoMap (): boolean {
@@ -138,28 +139,31 @@ export default Vue.extend({
       if (!this.isGoMap) return;
       this.isFly = true;
       setTimeout(() => {
-        this.$router.push(`/map?openid=${this.openid}`);
+        this.$router.push(`/map`);
       }, 2000)
     },
+    clickFD () {
+      this.wining.bool = false;
+      if (this.wining.type == 3) {
+        window.location.replace('http://hhlqr.whcewei.com/opc/ms/wxForeign/r?fsr=toOrderList');
+      }
+    },
     goIndex (obj: IsSubscribe) {
-      if (!obj.isSubscribe) this.$router.replace(`/home?openid=${this.openid}`);
+      if (!obj.isSubscribe) this.$router.replace(`/home`);
     }
   }
 })
 </script>
 
 <style lang="scss" scoped>
-
 .stageA_container {
   @extend .h100;
-  padding-top: 0.85rem;
   background: url('../../assets/img/stageA/bg.png') 0 0/100% auto no-repeat;
 }
 
 .top_a {
   @extend .w100;
   height: 10.5rem;
-  padding-top: 1rem;
   background: url('../../assets/img/stageA/moon.png') 0 0/100% 100% no-repeat;
 }
 
