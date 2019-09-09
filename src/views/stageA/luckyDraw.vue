@@ -27,8 +27,8 @@
             <span class="num">{{item}}</span>
           </span>
         </div>
-        <div class="go_map" @click="goMap" ref="bottom">
-          <div>
+        <div class="go_map" @click="goMap">
+          <div ref="bottom">
             <img v-if="isGoMap" :class="[isFly ? 'fly' : '']" src="@/assets/img/stageA/he.gif"  >
             <img v-else src="@/assets/img/stageA/he.png">
           </div>
@@ -92,7 +92,6 @@ export default Vue.extend({
   inject: ['stages'],
   mounted () {
     this.getPageInfo();
-    // 当最底部图片加载完成时，在触发 adaptPt
     this.$nextTick(() => adaptPt(this.$refs.top, this.$refs.bottom, this.$refs.moveTop))
   },
   computed: {
@@ -102,8 +101,7 @@ export default Vue.extend({
   },
   methods: {
     async getPageInfo (isloading: boolean = true) {
-      this.openid = getQueryString('openid');
-      const obj = await luckyDrawInfo(this.openid, isloading);
+      const obj = await luckyDrawInfo('', isloading);
       if (obj) {
         this.goIndex(obj);
         const keys = ['focaA', 'focaB', 'focaC', 'focaD', 'focaE'];
@@ -115,7 +113,7 @@ export default Vue.extend({
       }
     },
     async luckyDraw () {
-      const obj = await luckyDraw({openid: this.openid});
+      const obj = await luckyDraw();
       if (obj) {
         this.goIndex(obj);
         this.wining.bool = true;
@@ -142,7 +140,7 @@ export default Vue.extend({
       if (!this.isGoMap) return;
       this.isFly = true;
       setTimeout(() => {
-        this.$router.push(`/map`);
+        this.$router.replace(`/map`);
       }, 2000)
     },
     clickFD () {
@@ -257,7 +255,8 @@ export default Vue.extend({
   background: url('../../assets/img/stageA/btn.png') 0 0/100% 100% no-repeat;
   & > div {
     @extend .pa;
-    top: -0.25rem;
+    // top: -0.25rem;
+    margin-top: -0.25rem;
     left: -0.2rem;
     width: 1.75rem;
     height: 1.85rem;

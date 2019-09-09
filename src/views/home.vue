@@ -1,10 +1,20 @@
 <template>
   <div class="home pt_adapt" ref="top">
+    <img class="outer_view" src="@/assets/img/stageA/he.gif">
+    <img class="outer_view" src="@/assets/img/stageA/he.png">
+    <img class="outer_view" src="@/assets/img/stageA/tree.png">
+    <img class="outer_view" src="@/assets/img/stageA/hhsf.png">
+    <img class="outer_view" src="@/assets/img/stageA/hh.png">
+    <!-- 预加载图片，防止图片加载过慢，影响页面布局 -->
+
     <div class="title_main">
       <img class="star" src="@/assets/img/main/star.png">
       <img class="title_top" src="@/assets/img/main/title.png">
       <div class="title_mid">
-        <img src="@/assets/img/main/bottom.png">
+        <img class="bt_bg" src="@/assets/img/main/bottom.png">
+        <img class="bt_louA" src="@/assets/img/main/bottom_louA.png">
+        <img class="bt_louB" src="@/assets/img/main/bottom_louB.png">
+        <img class="bt_moon" src="@/assets/img/main/bottom_moon.png">
         <div class="btn" ref="bottom">
           <span v-for="item in btnList"
                 :key="item.classs"
@@ -28,12 +38,12 @@
       </template>
     </pop-up>
 
-    <pop-up :show="showRule">
+    <pop-up :show="showRule && isFirstIn">
       <template v-slot:main>
         <div class="popup_rule" :style="{'padding-top': stages.value == 1 ? '0.8rem' : '1.18rem'}">
           <img class="popup_title" :src="ruleTitle[stages.value]">
           <div class="popup_info" v-if="stages.value == 0">
-            <p>1. <span>活动时间：9月13日-9月19日</span></p>
+            <p>1. <span>活动时间：9月12日-9月19日</span></p>
             <p>2. 活动每天进入【黄鹤送福】页面可随机拆开3张福签，福签隐藏着超多福利哦！大额楼币、楼楼周边还有祝福卡。</p>
             <p>3.每获得5张不同的祝福卡，即可获得一只金色黄鹤，移动黄鹤至地图上点亮，即可获得<span class="big_red">共享8888888</span>楼币的机会！</p>
             <p class="rule_tips">* 活动期间，用户在扫码验真获取诚信福利时，也有机会获得祝福卡哦！</p>
@@ -75,7 +85,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { isSubscribe } from '@/utils/service';
-import { getQueryString, adaptPt } from '@/utils/util';
+import { getQueryString, adaptPt, isToday, getLocal, setLocal, clearLocal } from '@/utils/util';
 
 interface StageBtn {
   class: string,
@@ -93,6 +103,7 @@ export default Vue.extend({
         require('../assets/img/main/zmzg_title.png'),
         require('../assets/img/main/ymzg_title.png'),
       ],
+      isFirstIn: 1,
       isFollow: true,
       showFol: false,
       showRule: false,
@@ -123,12 +134,21 @@ export default Vue.extend({
   inject: ['stages'],
   mounted () {
     this.getSubStatus();
+    this.todayFirst();
     this.btnMask();
     this.$nextTick(() => adaptPt(this.$refs.top, this.$refs.bottom));
   },
   methods: {
+    todayFirst () {
+      const local = getLocal('today');
+      const today = `${new Date().getFullYear()}/${new Date().getMonth() + 1}/${new Date().getDate()}`;
+      if (!local || !getLocal('isFirst') || (local && !isToday(local))) {
+        setLocal('today', today);
+        setLocal('isFirst', '1');
+      }
+    },
     async getSubStatus (): Promise<any> {
-      const obj = await isSubscribe(getQueryString('openid'));
+      const obj = await isSubscribe();
       this.isFollow = obj ? obj.isSubscribe : false;
       this.showFol = !this.isFollow;
     },
@@ -172,8 +192,7 @@ export default Vue.extend({
     },
     goStage () {
       this.showRule = false
-      console.log(this.currentItem)
-      this.$router.push(`${this.currentItem.link}`);
+      this.$router.replace(`${this.currentItem.link}`);
     },
     goToStage (item: StageBtn): void {
       if (item.fullLock || item.halfLock) return;
@@ -181,8 +200,14 @@ export default Vue.extend({
         this.showFol = true;
         return;
       } else {
-        this.showRule = !this.showFol;
-        this.currentItem = item;
+        this.currentItem = item
+        this.isFirstIn = Number(getLocal('isFirst'));
+        if (this.isFirstIn) {
+          this.showRule = !this.showFol;
+          setLocal('isFirst', '0');
+        } else {
+          this.goStage();
+        }
       }
     }
   },
@@ -197,12 +222,12 @@ export default Vue.extend({
 
   .title_main {
     @extend .pr;
-    img{
+    & > img{
       @extend .pr;
       @extend .blo;
       @extend .w100;
     }
-    .star {
+    & > .star {
       @extend .pa;
       top: -1.5rem;
       right: 0;
@@ -221,9 +246,47 @@ export default Vue.extend({
     z-index: 9;
   }
 
+  .bt_bg {
+    @extend .pr;
+    @extend .w100;
+    z-index: 9;
+  }
+
+  .bt_louA {
+    @extend .pa;
+    top: 0.5rem;
+    left: 0.65rem;
+    width: 3.2rem;
+    z-index: 8;
+    transform: translateY(100%);
+    animation: riseUp 1.5s 1.5s 1 linear normal forwards;
+  }
+
+  .bt_louB {
+    @extend .pa;
+    @extend .w100;
+    top: 2.08rem;
+    left: 0;
+    z-index: 7;
+    transform: translateY(100%);
+    animation: riseUp 2.5s 1 1s linear normal forwards;
+  }
+
+  .bt_moon {
+    @extend .pa;
+    top: 0;
+    left: 52%;
+    margin-left: -2.65rem;
+    width: 5.3rem;
+    z-index: 6;
+    transform: translateY(100%);
+    animation: riseUp 2.5s 3s 1 linear normal forwards;
+  }
+
   .btn {
     padding: 0 0.9rem;
     @extend .pa;
+    z-index: 15;
     top: 5.35rem;
     & > .btn_com:last-child {
       margin-right: 0;

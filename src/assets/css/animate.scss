@@ -69,6 +69,15 @@
   animation: fly 2.5s linear 1;
 }
 
+@keyframes riseUp{
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0%);
+  }
+}
+
 @keyframes treeBoardA{
   0% {
     transform: rotate(0);

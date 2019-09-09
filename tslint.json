@@ -22,6 +22,7 @@
     "space-before-function-paren": [true, "always"],
     "no-unused-expression": false,
     "curly": false,
-    "triple-equals": false
+    "triple-equals": false,
+    "prefer-const": false
   }
 }

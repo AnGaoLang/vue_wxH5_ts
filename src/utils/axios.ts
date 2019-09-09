@@ -1,8 +1,9 @@
 import Axios from 'axios';
 import { VM } from '../main';
 
-// const baseUrl = 'http://hhlqr.whcewei.com/';
 const baseUrl = '';
+// const baseUrl = 'http://192.168.2.111:9100';
+// const baseUrl = 'http://hhlqr.whcewei.com';
 
 
 Axios.interceptors.request.use(

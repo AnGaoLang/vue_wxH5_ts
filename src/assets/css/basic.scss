@@ -28,3 +28,9 @@ html,body {
 .pt_adapt {
   padding-top: 0;
 }
+
+.outer_view {
+  @extend .pa;
+  left: -999999px;
+  top: -999999px;
+}
