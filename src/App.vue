@@ -1,5 +1,17 @@
 <template>
   <div id="app">
+    <img class="outer_view" src="@/assets/img/stageA/he.gif">
+    <img class="outer_view" src="@/assets/img/stageA/he.png">
+    <img class="outer_view" src="@/assets/img/stageA/tree.png">
+    <img class="outer_view" src="@/assets/img/stageA/hhsf.png">
+    <img class="outer_view" src="@/assets/img/stageA/hh.png">
+    <img class="outer_view" src="@/assets/img/main/title_l.png">
+    <img class="outer_view" src="@/assets/img/main/title_t.png">
+    <img class="outer_view" src="@/assets/img/main/title_r.png">
+    <img class="outer_view" src="@/assets/img/main/bottom.png">
+    <img class="outer_view" src="@/assets/img/main/bottom_louA.png">
+    <img class="outer_view" src="@/assets/img/main/bottom_louB.png">
+    <img class="outer_view" src="@/assets/img/main/bottom_moon.png">
     <!-- <transition name="opacity"> -->
       <router-view/>
     <!-- </transition> -->

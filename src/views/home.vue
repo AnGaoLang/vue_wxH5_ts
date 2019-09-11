@@ -1,15 +1,13 @@
 <template>
   <div class="home pt_adapt" ref="top">
-    <img class="outer_view" src="@/assets/img/stageA/he.gif">
-    <img class="outer_view" src="@/assets/img/stageA/he.png">
-    <img class="outer_view" src="@/assets/img/stageA/tree.png">
-    <img class="outer_view" src="@/assets/img/stageA/hhsf.png">
-    <img class="outer_view" src="@/assets/img/stageA/hh.png">
-    <!-- 预加载图片，防止图片加载过慢，影响页面布局 -->
-
     <div class="title_main">
       <img class="star" src="@/assets/img/main/star.png">
-      <img class="title_top" src="@/assets/img/main/title.png">
+      <!-- <img class="title_top" src="@/assets/img/main/title.png"> -->
+      <div class="title_top">
+        <img class="title_l" src="@/assets/img/main/title_l.png">
+        <img class="title_t" src="@/assets/img/main/title_t.png">
+        <img class="title_r" src="@/assets/img/main/title_r.png">
+      </div>
       <div class="title_mid">
         <img class="bt_bg" src="@/assets/img/main/bottom.png">
         <img class="bt_louA" src="@/assets/img/main/bottom_louA.png">
@@ -236,8 +234,41 @@ export default Vue.extend({
   }
 
   .title_top {
+    @extend .pr;
     height: 5.28rem;
-    z-index: 10,
+    z-index: 10;
+    background: url('../assets/img/main/title.png') 0 0/100% 100% no-repeat;
+    animation: fadeIn 0.5s 1 linear normal forwards;
+    & > img {
+      @extend .pa;
+    }
+  }
+
+  .title_l {
+    top: 2.4rem;
+    left: 0;
+    width: 1.15rem;
+    height: auto;
+    transform: scale(0.1);
+    animation: bloom 0.3s 1s 1 linear normal forwards;
+  }
+
+  .title_t {
+    top: 0;
+    left: 3rem;
+    width: 1.15rem;
+    height: auto;
+    transform: scale(0.1);
+    animation: bloom 0.3s 1s 1 linear normal forwards;
+  }
+
+  .title_r {
+    right: 0.1rem;
+    bottom: 0;
+    width: 0.9rem;
+    height: auto;
+    transform: scale(0.1);
+    animation: bloom 0.3s 1s 1 linear normal forwards;
   }
 
   .title_mid {
@@ -259,7 +290,7 @@ export default Vue.extend({
     width: 3.2rem;
     z-index: 8;
     transform: translateY(100%);
-    animation: riseUp 1.5s 1.5s 1 linear normal forwards;
+    animation: riseUp 0.5s 1 linear normal forwards;
   }
 
   .bt_louB {
@@ -269,7 +300,7 @@ export default Vue.extend({
     left: 0;
     z-index: 7;
     transform: translateY(100%);
-    animation: riseUp 2.5s 1 1s linear normal forwards;
+    animation: riseUp 0.5s 0.2s 1 linear normal forwards;
   }
 
   .bt_moon {
@@ -280,7 +311,7 @@ export default Vue.extend({
     width: 5.3rem;
     z-index: 6;
     transform: translateY(100%);
-    animation: riseUp 2.5s 3s 1 linear normal forwards;
+    animation: riseUp 0.5s 0.4s 1 linear normal forwards;
   }
 
   .btn {
@@ -309,14 +340,20 @@ export default Vue.extend({
 
   .btn_hhsf {
     background: url('../assets/img/main/hhsf.png') 0 0/100% 100% no-repeat;
+    opacity: 0;
+    animation: rollOver 0.3s 0.6s 1 linear normal forwards;
   }
 
   .btn_zmzg {
     background: url('../assets/img/main/zmzg.png') 0 0/100% 100% no-repeat;
+    opacity: 0;
+    animation: rollOver 0.3s 1.2s 1 linear normal forwards;
   }
 
   .btn_ymzg {
     background: url('../assets/img/main/ymzg.png') 0 0/100% 100% no-repeat;
+    opacity: 0;
+    animation: rollOver 0.3s 1.8s 1 linear normal forwards;
   }
 
   .popup_main {
