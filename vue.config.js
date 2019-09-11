@@ -12,7 +12,7 @@ module.exports = {
   },
   publicPath: process.env.NODE_ENV === 'production' ? '/nd/' : '/',
   configureWebpack: {
-    devtool: 'source-map'
+    devtool: 'source-map',
   },
   css: {
     sourceMap: true,

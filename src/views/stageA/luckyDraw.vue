@@ -61,6 +61,19 @@
         </div>
       </template>
     </pop-up>
+
+    <pop-up :show="exhaust">
+      <template v-slot:main>
+        <div class="popup_result">
+          <div class="result_bg">
+            <img src="@/assets/img/stageA/exhaust.png">
+            <p>亲，今天的抽奖机会已用完，</p>
+            <p>请明天再来~</p>
+          </div>
+          <div class="close" @click="exhaust = false;">确定</div>
+        </div>
+      </template>
+    </pop-up>
   </div>
 </template>
 
@@ -87,6 +100,7 @@ export default Vue.extend({
         prizeName: '',
         closeText: ''
       },
+      exhaust: false,
     }
   },
   inject: ['stages'],
@@ -115,25 +129,29 @@ export default Vue.extend({
     async luckyDraw () {
       const obj = await luckyDraw();
       if (obj) {
-        this.goIndex(obj);
-        this.wining.bool = true;
-        this.wining.type = obj.prizeType;
-        this.wining.imgUrl = obj.imgUrl;
-        switch (obj.prizeType) {
-          case 1:
-            this.wining.prizeName = obj.prizeName;
-            this.wining.closeText = '收下祝福';
-            break;
-          case 2:
-            this.wining.prizeName = obj.prizeName;
-            this.wining.closeText = '收下奖励';
-            break;
-          case 3:
-            this.wining.prizeName = obj.prizeName;
-            this.wining.closeText = '收下奖励';
-            break;
+        if (obj.code == 501) {
+          this.exhaust = true;
+        } else {
+          this.goIndex(obj);
+          this.wining.bool = true;
+          this.wining.type = obj.prizeType;
+          this.wining.imgUrl = obj.imgUrl;
+          switch (obj.prizeType) {
+            case 1:
+              this.wining.prizeName = obj.prizeName;
+              this.wining.closeText = '收下祝福';
+              break;
+            case 2:
+              this.wining.prizeName = obj.prizeName;
+              this.wining.closeText = '收下奖励';
+              break;
+            case 3:
+              this.wining.prizeName = obj.prizeName;
+              this.wining.closeText = '收下奖励';
+              break;
+          }
+          this.getPageInfo(false);
         }
-        this.getPageInfo(false);
       };
     },
     goMap () {
@@ -308,8 +326,6 @@ export default Vue.extend({
   }
 }
 
-
-
 .win_mid {
   padding-top: 0.75rem;
   height: 5.5rem;
@@ -318,6 +334,44 @@ export default Vue.extend({
   }
   & > .win_board {
     margin-left: -0.7rem;
+  }
+}
+
+.popup_result {
+  @extend .pa_mid;
+  width: 6.05rem;
+  height: 7.8rem;
+  .close {
+    @extend .pa;
+    left: 50%;
+    transform: translate(-50%, 100%);
+    bottom: 1rem;
+    color: $resultClose;
+    background: url('../../assets/img/stageA/map_btn.png') 0 0/100% 100% no-repeat;
+  }
+}
+
+.result_bg {
+  padding: 0.65rem 0.38rem 0.38rem;
+  width: 6.05rem;
+  height: 6.05rem;
+  background: url('../../assets/img/stageA/map_inner.png') 0 0/100% 100% no-repeat;
+  & > img {
+    @extend .blo;
+    @extend .mAu;
+    margin-bottom: 0.2rem;
+    width: 2.28rem;
+    height: auto;
+  }
+  & > p{
+    @extend .fm_ss;
+    font-size: 0.38rem;
+    color: $exhaust;
+    line-height: 0.8rem;
+    text-align: center;
+    & > span {
+      color: $ruleTitleRed;
+    }
   }
 }
 </style>

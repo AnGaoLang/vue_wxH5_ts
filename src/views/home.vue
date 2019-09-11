@@ -36,7 +36,7 @@
       </template>
     </pop-up>
 
-    <pop-up :show="showRule && isFirstIn">
+    <pop-up :show="showRule && !!isFirstIn">
       <template v-slot:main>
         <div class="popup_rule" :style="{'padding-top': stages.value == 1 ? '0.8rem' : '1.18rem'}">
           <img class="popup_title" :src="ruleTitle[stages.value]">
@@ -82,7 +82,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { isSubscribe } from '@/utils/service';
+import { isSubscribe} from '@/utils/service';
 import { getQueryString, adaptPt, isToday, getLocal, setLocal, clearLocal } from '@/utils/util';
 
 interface StageBtn {

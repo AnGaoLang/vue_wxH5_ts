@@ -18,6 +18,10 @@ Axios.interceptors.request.use(
 
 Axios.interceptors.response.use(
   (response) => {
+    if (response.data.code && response.data.code === 501) {
+      VM.$loading.hide();
+      return response.data;
+    };
     if (response.data.code && response.data.code === 200) {
       VM.$loading.hide();
       return response.data.data;

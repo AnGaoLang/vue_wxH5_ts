@@ -57,7 +57,7 @@
           this.stages.value = 3;
         }
       },
-    }
+    },
   });
 </script>
 
