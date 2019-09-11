@@ -115,7 +115,7 @@ export default Vue.extend({
   },
   methods: {
     async getPageInfo (isloading: boolean = true) {
-      const obj = await luckyDrawInfo('', isloading);
+      const obj = await luckyDrawInfo('', isloading); // {'focaA': 0, 'focaB': 0, 'focaC': 0, 'focaD': 0, 'focaE': 0}
       if (obj) {
         this.goIndex(obj);
         const keys = ['focaA', 'focaB', 'focaC', 'focaD', 'focaE'];
@@ -127,9 +127,9 @@ export default Vue.extend({
       }
     },
     async luckyDraw () {
-      const obj = await luckyDraw();
+      const obj = await luckyDraw(); // {"imgUrl": "", "isSubscribe": true, "prizeName": "和谐福签"， prizeType: 1}
       if (obj) {
-        if (obj.code == 501) {
+        if (obj.code == 501) { // code为501时，代表当日抽奖次数已耗尽
           this.exhaust = true;
         } else {
           this.goIndex(obj);

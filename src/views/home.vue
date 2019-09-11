@@ -146,7 +146,7 @@ export default Vue.extend({
       }
     },
     async getSubStatus (): Promise<any> {
-      const obj = await isSubscribe();
+      const obj = await isSubscribe(); // {isSubscribe: boolean}
       this.isFollow = obj ? obj.isSubscribe : false;
       this.showFol = !this.isFollow;
     },

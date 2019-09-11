@@ -42,6 +42,7 @@
     },
     methods: {
       initStage () {
+        // 判断的活动开启时间
         const nowDate = new Date().getTime();
         const stageATime = new Date('2019/9/1 00:00:00').getTime();
         const stageBTime = new Date('2019/9/13 00:00:00').getTime();
