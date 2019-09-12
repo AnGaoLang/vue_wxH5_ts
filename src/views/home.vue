@@ -16,7 +16,7 @@
         <div class="btn" ref="bottom">
           <span v-for="item in btnList"
                 :key="item.classs"
-                :class="['btn_com', item.class]"
+                :class="['btn_com', item.class, item.isClick ? 'zoom_in' : '']"
                 @click="goToStage(item)">
             <img v-show="item.halfLock"  src="@/assets/img/main/halflock.png">
             <img v-show="item.fullLock" src="@/assets/img/main/fulllock.png">
@@ -111,18 +111,21 @@ export default Vue.extend({
           class: 'btn_hhsf',
           fullLock: false,
           halfLock: true,
+          isClick: false,
           link: '/luckyDraw',
         },
         {
           class: 'btn_zmzg',
           fullLock: false,
           halfLock: true,
+          isClick: false,
           link: '/map',
         },
         {
           class: 'btn_ymzg',
           fullLock: false,
           halfLock: true,
+          isClick: false,
           link: '',
         }
       ],
@@ -146,7 +149,7 @@ export default Vue.extend({
       }
     },
     async getSubStatus (): Promise<any> {
-      const obj = await isSubscribe(); // {isSubscribe: boolean}
+      const obj = await isSubscribe();
       this.isFollow = obj ? obj.isSubscribe : false;
       this.showFol = !this.isFollow;
     },
@@ -154,6 +157,7 @@ export default Vue.extend({
       this.btnList.forEach((item: StageBtn, index: number) => {
         switch (this.stages.value) {
           case 0:
+            setTimeout(() => this.btnList[0].isClick = true, 2500);
             if (!index) {
               this.btnList[index].fullLock = false;
               this.btnList[index].halfLock = false;
@@ -163,6 +167,7 @@ export default Vue.extend({
             }
             break;
           case 1:
+            setTimeout(() => this.btnList[0].isClick = true, 2500);
             this.btnList[0].fullLock = true;
             this.btnList[0].halfLock = false;
             this.btnList[1].fullLock = false;
@@ -171,6 +176,7 @@ export default Vue.extend({
             this.btnList[2].halfLock = true;
             break;
           case 2:
+            setTimeout(() => this.btnList[0].isClick = true, 2500);
             this.btnList[0].fullLock = true;
             this.btnList[0].halfLock = false;
             this.btnList[1].fullLock = true;
@@ -356,6 +362,11 @@ export default Vue.extend({
     animation: rollOver 0.3s 1.8s 1 linear normal forwards;
   }
 
+  .zoom_in {
+    opacity: 1;
+    animation: zoom 0.8s linear infinite alternate;
+  }
+
   .popup_main {
     @extend .pa_mid;
     @extend .br5;
@@ -444,23 +455,23 @@ export default Vue.extend({
   }
 
   .result_bg {
-      padding: 0.55rem 0.38rem 0.38rem;
-      width: 6.05rem;
-      height: 6.05rem;
-      background: url('../assets/img/main/result_bg.png') 0 0/100% 100% no-repeat;
-      & > img {
-        @extend .blo;
-        @extend .w100;
-        height: auto;
-      }
-      & > p{
-        font-size: 0.4rem;
-        color: $black;
-        line-height: 0.7rem;
-        text-align: center;
-        & > span {
-          color: $ruleTitleRed;
-        }
+    padding: 0.55rem 0.38rem 0.38rem;
+    width: 6.05rem;
+    height: 6.05rem;
+    background: url('../assets/img/main/result_bg.png') 0 0/100% 100% no-repeat;
+    & > img {
+      @extend .blo;
+      @extend .w100;
+      height: auto;
+    }
+    & > p{
+      font-size: 0.4rem;
+      color: $black;
+      line-height: 0.7rem;
+      text-align: center;
+      & > span {
+        color: $ruleTitleRed;
       }
     }
+  }
 </style>

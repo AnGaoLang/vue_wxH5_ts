@@ -18,7 +18,8 @@
             </span>
           </div>
           <div class="map_popm">
-            <p>成功放飞黄鹤的楼主们将一起分享<span>8888888楼币!</span>最终获奖结果将在9月27日1916沙龙推文中公布，敬请持续关注活动进程。我和我的祖国第二期【筑梦中国】即将开启，上传照片生成你的专属海报吧，还有机会收获惊喜好礼哦！</p>
+            <p>成功放飞黄鹤的楼主们将一起分享<span>8888888楼币!</span>最终获奖结果将在9月27日1916沙龙推文中公布，敬请持续关注活动进程。</p>
+            <p>我和我的祖国第二期【筑梦中国】即将开启，上传照片生成你的专属海报吧，还有机会收获惊喜好礼哦！</p>
           </div>
           <div class="close" @click="goBacHome">返回主页</div>
         </div>
@@ -140,7 +141,7 @@ export default Vue.extend({
 }
 
 .map_popm {
-  padding: 0.9rem 0.5rem;
+  padding: 0.7rem 0.5rem;
   height: 5.5rem;
   line-height: 0.54rem;
   font-size: 0.3rem;

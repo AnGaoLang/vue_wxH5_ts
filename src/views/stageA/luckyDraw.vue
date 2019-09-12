@@ -34,6 +34,7 @@
           </div>
           放飞祝福
         </div>
+        <p class="go_map_info">集齐5种祝福语即可放飞祝福</p>
       </div>
     </div>
 
@@ -49,8 +50,8 @@
               <p class="wining_coin">恭喜你！获得{{wining.prizeName}}</p>
             </span>
             <span v-show="wining.type == 3">
-              <p>恭喜你！成功获得</p>
-              <p class="wining_coin">楼楼家的福袋奖励!</p>
+              <p>恭喜您成功获得精美周边!</p>
+              <p class="wining_coin">（奖品图案以实物为准）</p>
             </span>
           </div>
           <div class="win_mid">
@@ -115,7 +116,7 @@ export default Vue.extend({
   },
   methods: {
     async getPageInfo (isloading: boolean = true) {
-      const obj = await luckyDrawInfo('', isloading); // {'focaA': 0, 'focaB': 0, 'focaC': 0, 'focaD': 0, 'focaE': 0}
+      const obj = await luckyDrawInfo('', isloading);
       if (obj) {
         this.goIndex(obj);
         const keys = ['focaA', 'focaB', 'focaC', 'focaD', 'focaE'];
@@ -127,9 +128,9 @@ export default Vue.extend({
       }
     },
     async luckyDraw () {
-      const obj = await luckyDraw(); // {"imgUrl": "", "isSubscribe": true, "prizeName": "和谐福签"， prizeType: 1}
+      const obj = await luckyDraw();
       if (obj) {
-        if (obj.code == 501) { // code为501时，代表当日抽奖次数已耗尽
+        if (obj.code == 501) {
           this.exhaust = true;
         } else {
           this.goIndex(obj);
@@ -164,7 +165,7 @@ export default Vue.extend({
     clickFD () {
       this.wining.bool = false;
       if (this.wining.type == 3) {
-        window.location.replace('http://hhlqr.whcewei.com/opc/ms/wxForeign/r?fsr=toOrderList');
+        window.location.replace('https://wx.hhl1916.com/opc/ms/wxForeign/r?fsr=toOrderList');
       }
     },
     goIndex (obj: IsSubscribe) {
@@ -335,6 +336,14 @@ export default Vue.extend({
   & > .win_board {
     margin-left: -0.7rem;
   }
+}
+
+.go_map_info {
+  @extend .fm_ss;
+  margin-top: 0.1rem;
+  color: $winTop;
+  font-size: 0.24rem;
+  text-align: center;
 }
 
 .popup_result {
