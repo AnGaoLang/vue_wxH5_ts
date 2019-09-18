@@ -2,7 +2,7 @@ import Axios from 'axios';
 import { VM } from '../main';
 
 const baseUrl = '';
-// const baseUrl = 'http://192.168.2.111:9100';
+// const baseUrl = 'http://192.168.2.116:9100';
 // const baseUrl = 'http://hhlqr.whcewei.com';
 
 
@@ -24,7 +24,7 @@ Axios.interceptors.response.use(
     };
     if (response.data.code && response.data.code === 200) {
       VM.$loading.hide();
-      return response.data.data;
+      return response.data.data ? response.data.data : response.data.msg;
     } else {
       VM.$loading.hide();
       alert(response.data.msg);
@@ -40,7 +40,7 @@ Axios.interceptors.response.use(
 
 function post (url: string, data: any, isloading: boolean = true) {
   isloading = isloading ? isloading : false;
-  isloading && VM.$loading.show();
+  (isloading && VM) && VM.$loading.show();
   return Axios({
     url: baseUrl + url,
     method: 'post',
@@ -61,7 +61,7 @@ function post (url: string, data: any, isloading: boolean = true) {
 
 function get (url: string, data?: object, isloading: boolean = true) {
   isloading = isloading ? isloading : false;
-  isloading && VM.$loading.show();
+  (isloading && VM) && VM.$loading.show();
   return Axios({
     url: baseUrl + url,
     method: 'get',
@@ -80,4 +80,25 @@ function get (url: string, data?: object, isloading: boolean = true) {
   );
 }
 
-export { post, get }
+function upload (url: string, data?: object, isloading: boolean = true) {
+  isloading = isloading ? isloading : false;
+  (isloading && VM) && VM.$loading.show();
+  return Axios({
+    url: baseUrl + url,
+    method: 'post',
+    data: data,
+    headers: {
+      'X-Requested-With': 'XMLHttpRequest',
+      'Content-Type': '',
+    }
+  }).then(
+    (response: any) => {
+      return response;
+    },
+    (error: any) => {
+      return null;
+    }
+  );
+}
+
+export { post, get, upload }

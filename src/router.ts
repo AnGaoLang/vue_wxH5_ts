@@ -24,9 +24,19 @@ let router = new Router({
       component: () => import(/* webpackChunkName: "staeAmap" */ './views/stageA/map.vue'),
     },
     {
+      path: '/uploadPic',
+      name: 'uploadPic',
+      component: () => import(/* webpackChunkName: "uploadPic" */ './views/stageB/uploadPic.vue'),
+    },
+    {
       path: '/myWorks',
       name: 'myWorks',
       component: () => import(/* webpackChunkName: "myWorks" */ './views/stageB/myWorks.vue'),
+    },
+    {
+      path: '/preview',
+      name: 'preview',
+      component: () => import(/* webpackChunkName: "preview" */ './views/stageB/preview.vue'),
     }
   ],
 });
@@ -49,6 +59,7 @@ router.afterEach(async (to) => {
       'onMenuShareTimeline',
       'onMenuShareQQ',
       'onMenuShareQZone',
+      'chooseImage'
     ]
   });
 

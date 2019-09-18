@@ -39,7 +39,7 @@
     </div>
 
     <pop-up :show="wining.bool">
-      <template v-slot:main>
+      <template>
         <div class="win">
           <div class="win_title">
             <span v-show="wining.type == 1">
@@ -63,18 +63,7 @@
       </template>
     </pop-up>
 
-    <pop-up :show="exhaust">
-      <template v-slot:main>
-        <div class="popup_result">
-          <div class="result_bg">
-            <img src="@/assets/img/stageA/exhaust.png">
-            <p>亲，今天的抽奖机会已用完，</p>
-            <p>请明天再来~</p>
-          </div>
-          <div class="close" @click="exhaust = false;">确定</div>
-        </div>
-      </template>
-    </pop-up>
+    <pop-up :show="exhaust" v-on:popToggle="popToggle" tipOne="亲，今天的抽奖机会已用完，" tipTwo="请明天再来~"></pop-up>
   </div>
 </template>
 
@@ -126,6 +115,9 @@ export default Vue.extend({
         });
         this.treeBoard = array;
       }
+    },
+    popToggle (bool: boolean) {
+      this.exhaust = bool;
     },
     async luckyDraw () {
       const obj = await luckyDraw();
@@ -344,43 +336,5 @@ export default Vue.extend({
   color: $winTop;
   font-size: 0.24rem;
   text-align: center;
-}
-
-.popup_result {
-  @extend .pa_mid;
-  width: 6.05rem;
-  height: 7.8rem;
-  .close {
-    @extend .pa;
-    left: 50%;
-    transform: translate(-50%, 100%);
-    bottom: 1rem;
-    color: $resultClose;
-    background: url('../../assets/img/stageA/map_btn.png') 0 0/100% 100% no-repeat;
-  }
-}
-
-.result_bg {
-  padding: 0.65rem 0.38rem 0.38rem;
-  width: 6.05rem;
-  height: 6.05rem;
-  background: url('../../assets/img/stageA/map_inner.png') 0 0/100% 100% no-repeat;
-  & > img {
-    @extend .blo;
-    @extend .mAu;
-    margin-bottom: 0.2rem;
-    width: 2.28rem;
-    height: auto;
-  }
-  & > p{
-    @extend .fm_ss;
-    font-size: 0.38rem;
-    color: $exhaust;
-    line-height: 0.8rem;
-    text-align: center;
-    & > span {
-      color: $ruleTitleRed;
-    }
-  }
 }
 </style>

@@ -25,6 +25,7 @@ export const adaptPt = (top: HTMLElement | null, bottom: HTMLElement | null, mov
     const padTop = toBot > 60 ? toBot / 2 : 0;
     top && (top.style.paddingTop = `${padTop}px`);
   } else { // 距底部小于10则整体上移
+    top && (top.style.paddingTop = `0px`);
     if (moveTop) {
       if (toBot > 0) {
         moveTop.style.cssText = `position:relative;top: -${toBot + 5}px;`;

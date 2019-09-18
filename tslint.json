@@ -23,6 +23,7 @@
     "no-unused-expression": false,
     "curly": false,
     "triple-equals": false,
-    "prefer-const": false
+    "prefer-const": false,
+    "object-literal-shorthand": false
   }
 }

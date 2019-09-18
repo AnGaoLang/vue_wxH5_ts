@@ -66,7 +66,8 @@ declare namespace jWeixin {
 		'chooseWXPay' |
 		'openProductSpecificView' |
 		'addCard' |
-		'chooseCard' |
+    'chooseCard' |
+    'getLocalImgData' |
 		'openCard';
 
 	// 所有JS接口列表
@@ -212,12 +213,23 @@ declare namespace jWeixin {
 	/**
 	 * 从本地相册选择图片或使用相机拍照。
 	 */
-	function chooseImage(params: Partial<IChooseImage>): void;
+  function chooseImage(params: Partial<IChooseImage>): void;
+  
+  /**
+	 * 获取本地图片接口
+	 */
+	interface ILocalImgData extends BaseParams {
+		localId: string | string[]; // 需要上传的图片的本地ID，由chooseImage接口获得
+		// 返回图片的服务器端ID
+		success(res: { localData: string }): void;
+  }
+  
+	function getLocalImgData(params: ILocalImgData): void;
 
 	interface IPreviewImage extends BaseParams {
 		current: string; // 当前显示图片的http链接
 		urls: string[]; // 需要预览的图片http链接列表
-	}
+  }
 	/**
 	 * 预览图片接口
 	 */

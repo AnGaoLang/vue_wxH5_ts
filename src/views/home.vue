@@ -26,7 +26,7 @@
     </div>
 
     <pop-up :show="showFol">
-      <template v-slot:main>
+      <template>
         <div class="popup_main">
           <p>对不起！您还不是<span>【1916沙龙】</span>会员</p>
           <p>请识别二维码关注后参加活动</p>
@@ -37,7 +37,7 @@
     </pop-up>
 
     <pop-up :show="showRule && !!isFirstIn">
-      <template v-slot:main>
+      <template>
         <div class="popup_rule" :style="{'padding-top': stages.value == 1 ? '0.8rem' : '1.18rem'}">
           <img class="popup_title" :src="ruleTitle[stages.value]">
           <div class="popup_info" v-if="stages.value == 0">
@@ -65,7 +65,7 @@
     </pop-up>
 
     <pop-up :show="resultShow">
-      <template v-slot:main>
+      <template>
         <div class="popup_result">
           <div class="result_bg">
             <img src="@/assets/img/main/result.png">
@@ -167,7 +167,7 @@ export default Vue.extend({
             }
             break;
           case 1:
-            setTimeout(() => this.btnList[0].isClick = true, 2500);
+            setTimeout(() => this.btnList[1].isClick = true, 2500);
             this.btnList[0].fullLock = true;
             this.btnList[0].halfLock = false;
             this.btnList[1].fullLock = false;
@@ -176,7 +176,7 @@ export default Vue.extend({
             this.btnList[2].halfLock = true;
             break;
           case 2:
-            setTimeout(() => this.btnList[0].isClick = true, 2500);
+            setTimeout(() => this.btnList[2].isClick = true, 2500);
             this.btnList[0].fullLock = true;
             this.btnList[0].halfLock = false;
             this.btnList[1].fullLock = true;

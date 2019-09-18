@@ -2,7 +2,6 @@ module.exports = {
   devServer:{
     open: true,
     proxy: {
-      // 后端本地
       '/nd': {
         target: 'http://hhlqr.whcewei.com/',
         changeOrigin: true,
