@@ -2,18 +2,20 @@
   <div class="pic_container" ref="top">
     <img class="pic_top" src="@/assets/img/stageB/zmzg.png">
     <div class="pic_mid" ref="screenShot">
-      <img class="pic_frame" :src="picFrame[frameIndex]">
-      <img v-show="tipsShow" class="pic_tips" src="@/assets/img/stageB/tips.png" @click="photo">
-      <span v-if="bgBtnShow" class="toggle_bgBtn" @click="toggleBg">切换背景板</span>
+      <div class="pic_frame" :style="`background: url(${picFrame[frameIndex]}) 0 0/100% 100% no-repeat`"></div>
+      <img class="pic_tips" src="@/assets/img/stageB/tips.png" @click="photo" data-html2canvas-ignore>
+      <span class="toggle_bgBtn" @click="toggleBg" data-html2canvas-ignore>切换背景板</span>
       <div class="pic_midbg" :style="`background-image: url(${newPhoto})`"></div>
     </div>
     <div class="pic_bot">
       <button type="button" @click="goMyWork" ref="bottom">我的作品</button>
       <button type="button" @click="uploapPic">确认上传</button>
     </div>
+    <page-bot style="margin-top: 0.3rem;"/>
     <pic-clip :show="picClipShow" 
               :img-src="picClipImg"
               :clipWHRatio="0.91"
+              :compressRatio="this.compressRatio"
               @hide="picClipHide"
               @finish="finish"></pic-clip>
     <pop-up :show="joinShow" v-on:popToggle="popToggle" :tipOne="tips"></pop-up>
@@ -26,7 +28,7 @@
   import Vue from 'vue';
   import picClip from '@/components/picClip.vue';
   import html2canvas from 'html2canvas';
-  import { adaptPt } from '@/utils/util';
+  import { adaptPt, getImgSize, base64ToBlob } from '@/utils/util';
   import { uploadPic } from '@/utils/service';
 
   export default Vue.extend({
@@ -40,12 +42,12 @@
           require('@/assets/img/stageB/pic_frameC.png')
         ],
         tips: '',
-        tipsShow: true,
-        bgBtnShow: true,
         frameIndex: 0,
         picClipImg: '',
         picClipShow: false,
         newPhoto: '',
+        compressRatio: 1,
+        asd: ''
       }
     },
     components: {
@@ -67,7 +69,7 @@
         wx.ready(() => {
           wx.chooseImage({
             count: 1,
-            sizeType: ['compressed'],
+            sizeType: ['original'],
             sourceType: ['album', 'camera'],
             success: (res) => {
               wx.getLocalImgData({
@@ -80,6 +82,10 @@
                     let base64 = `data:image/jpeg;base64,${resData.localData}`;
                     imgSrc = base64.replace(/\r|\n/g, '').replace('data:image/jgp', 'data:image/jpeg')
                   };
+                  // alert(getImgSize(imgSrc))
+                  if (getImgSize(imgSrc) > 100) {
+                    this.compressRatio = 0.99;
+                  };
                   this.picClipImg = imgSrc;
                   this.picClipShow = true;
                 }
@@ -88,9 +94,10 @@
           });
         });
       },
-      finish (res: string) {
+      finish (res: any) {
         // alert(res + '');
-        this.newPhoto = res;
+        // alert(res.size / 1024);
+        this.newPhoto = URL.createObjectURL(res);
       },
       picClipHide (res: boolean) {
         this.picClipShow = res;
@@ -104,24 +111,15 @@
           this.tips = '亲，请选择照片上传！';
           return;
         };
-        this.tipsShow = false;
-        this.bgBtnShow = false;
-        function base64ToBlob (dataurl: string) {
-          let arr = dataurl.split(',');
-          let bstr = atob(arr[1]);
-          let n = bstr.length;
-          let u8arr = new Uint8Array(n);
-          while (n--) {
-            u8arr[n] = bstr.charCodeAt(n);
-          }
-          return new Blob([u8arr], {type: 'image/jpeg'});
-        }
+        // this.newPhoto = require('@/assets/img/big.png');
         this.$nextTick(() => {
           html2canvas(this.$refs.screenShot, {
+            allowTaint: true,
             backgroundColor: '#c72930'
           }).then((canvas) => {
-            let data = canvas.toDataURL('image/jpeg', 0.7);
+            let data = canvas.toDataURL('image/jpeg', 0.8);
             let blob = base64ToBlob(data);
+            // alert(blob.size / 1024);
             let formData = new FormData();
             formData.append('file', blob ? blob : '');
             uploadPic(formData).then((res) => {
@@ -135,10 +133,9 @@
             //   })
             // })
           }).catch((res) => {
+            // alert(res)
             // alert(res);
-            this.joinShow = true;
             this.tips = '上传图片过大，请重新选择上传！';
-            this.tipsShow = true;
             this.newPhoto = '';
           })
         })

@@ -19,27 +19,26 @@ Axios.interceptors.request.use(
 Axios.interceptors.response.use(
   (response) => {
     if (response.data.code && response.data.code === 501) {
-      VM.$loading.hide();
+      // VM.$loading.hide();
       return response.data;
     };
     if (response.data.code && response.data.code === 200) {
-      VM.$loading.hide();
+      // VM.$loading.hide();
       return response.data.data ? response.data.data : response.data.msg;
     } else {
-      VM.$loading.hide();
+      // VM.$loading.hide();
       alert(response.data.msg);
       return null;
     }
   },
   (error) => {
-    VM.$loading.hide();
+    // VM.$loading.hide();
     alert(error);
     return Promise.reject(error);
   }
 );
 
 function post (url: string, data: any, isloading: boolean = true) {
-  isloading = isloading ? isloading : false;
   (isloading && VM) && VM.$loading.show();
   return Axios({
     url: baseUrl + url,
@@ -51,16 +50,17 @@ function post (url: string, data: any, isloading: boolean = true) {
     }
   }).then(
     (response: any) => {
+      (isloading && VM) && VM.$loading.hide();
       return response;
     },
     (error: any) => {
+      (isloading && VM) && VM.$loading.hide();
       return null;
     }
   );
 }
 
 function get (url: string, data?: object, isloading: boolean = true) {
-  isloading = isloading ? isloading : false;
   (isloading && VM) && VM.$loading.show();
   return Axios({
     url: baseUrl + url,
@@ -72,16 +72,17 @@ function get (url: string, data?: object, isloading: boolean = true) {
     }
   }).then(
     (response: any) => {
+      (isloading && VM) && VM.$loading.hide();
       return response;
     },
     (error: any) => {
+      (isloading && VM) && VM.$loading.hide();
       return null;
     }
   );
 }
 
 function upload (url: string, data?: object, isloading: boolean = true) {
-  isloading = isloading ? isloading : false;
   (isloading && VM) && VM.$loading.show();
   return Axios({
     url: baseUrl + url,
@@ -93,9 +94,11 @@ function upload (url: string, data?: object, isloading: boolean = true) {
     }
   }).then(
     (response: any) => {
+      (isloading && VM) && VM.$loading.hide();
       return response;
     },
     (error: any) => {
+      (isloading && VM) && VM.$loading.hide();
       return null;
     }
   );

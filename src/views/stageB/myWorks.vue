@@ -3,6 +3,7 @@
     <div class="mywork_border">
       <img class="mywork_title" src="@/assets/img/stageB/title.png">
       <div class="mywork_main">
+        <p class="mywork_ttips">您离大奖还差最后一步，选择一张满意作品参赛，就有机会获得黄鹤宝盒！</p>
         <div class="mywork_list">
           <div class="mywork_back" @click="goback">
             <img src="@/assets/img/stageB/upload.png">
@@ -29,6 +30,7 @@
         </div>
         <p class="mywork_tips">仅可选择一张海报参赛哦！</p>
       </div>
+      <page-bot/>
     </div>
 
     <pop-up :show="joinShow" v-on:popToggle="popToggle" :tipOne="tips"></pop-up>
@@ -151,7 +153,16 @@
 
 .mywork_main {
   padding: 7% 3% 0;
-  height: 85%;
+  height: 81%;
+}
+
+.mywork_ttips {
+  height: 12%;
+  padding: 3% 10%;
+  font-size: 0.26rem;
+  color: $qrOrange;
+  text-align: center;
+  background: $mywordBg;
 }
 
 .mywork_back {
@@ -173,8 +184,8 @@
 }
 
 .mywork_list {
-  @extend .h100;
-  padding: 0.5rem 0.17rem;
+  height: 90%;
+  padding: 0 0.17rem 0.5rem;
   overflow-x: hidden;
   overflow-y: scroll;
   display: flex;
@@ -225,11 +236,12 @@
 
 .square {
   @extend .pa;
-  right: 0.15rem;
+  right: 0.1rem;
   bottom: 0.1rem;
-  width: 0.27rem;
-  height: 0.27rem;
-  border: 1px solid $ruleTitleRed;
+  width: 0.5rem;
+  height: 0.6rem;
+  border: 3px solid $ruleTitleRed;
+  border-radius: 5px;
 }
 
 .mywork_join:after {
@@ -256,10 +268,10 @@
 .square_selected:after {
   content: ' ';
   @extend .pa;
-  left: 0;
+  left: -3px;
   top: -0.1rem;
-  width: 0.4rem;
-  height: 0.35rem;
+  width: 0.8rem;
+  height: 0.8rem;
   background: url('../../assets/img/stageB/select.png') 0 0/100% 100% no-repeat;
 }
 

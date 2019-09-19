@@ -1,7 +1,7 @@
 import { get, post, upload } from './axios';
 
 export const checkWX = (url: string) => {
-  return get(`/nd/getJsApi?url=${url}`)
+  return get(`/nd/getJsApi?url=${url}`, undefined, false)
 }
 
 export const isSubscribe = () => {

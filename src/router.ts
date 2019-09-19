@@ -92,14 +92,14 @@ router.afterEach(async (to) => {
     });
 
     const toFriend = {
-      title: '黄鹤送福，抢8888888楼币', // 分享标题
-      desc: '《我和我的祖国》系列活动第一期，团聚你我，圆梦中国！', // 分享描述
+      title: '百万楼币还不够？黄鹤宝盒等你拿！', // 分享标题
+      desc: '《我和我的祖国》系列活动第二期，和祖国同框，筑梦中国！', // 分享描述
       link: 'https://wx.hhl1916.com/opc/ms/wxForeign/r?fsr=toZhongqiu', // 分享链接
       imgUrl: 'https://qr.hhl1916.com/nd/static/share.jpg', // 分享图标
       success: () => {}
     };
     const toCircle = {
-      title: '黄鹤送福，抢8888888楼币', // 分享标题
+      title: '百万楼币还不够？黄鹤宝盒等你拿！', // 分享标题
       link: 'https://wx.hhl1916.com/opc/ms/wxForeign/r?fsr=toZhongqiu', // 分享链接
       imgUrl: 'https://qr.hhl1916.com/nd/static/share.jpg', // 分享图标
       success: () => {}

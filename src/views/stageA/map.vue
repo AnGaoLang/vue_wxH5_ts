@@ -7,6 +7,7 @@
         <img v-show="!mapLight" class="map_he" src="@/assets/img/stageA/he.gif">
       </div>
       <p class="map_bottom" ref="bottom">{{mapLight ? '[点击地图，筑梦中国]' : ''}}</p>
+      <page-bot style="margin-top: 0.3rem;"/>
     </div>
 
     <pop-up :show="showResult">

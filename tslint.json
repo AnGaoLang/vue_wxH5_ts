@@ -9,21 +9,23 @@
     ]
   },
   "rules": {
-    "indent": [true, "spaces", 2],
-    "interface-name": false,
-    "no-consecutive-blank-lines": false,
+    "indent": [true, "spaces", 2], // 缩进2个字符
+    "interface-name": false, // 接口声明以I开头
+    "no-consecutive-blank-lines": false, // 结尾不能有多余空格
     "object-literal-sort-keys": false,
     "ordered-imports": false,
     "quotemark": [true, "single"],
-    "no-console": false,
-    "no-debugger": false,
+    "no-console": false, // 不能有console
+    "no-debugger": false, // 不能有debugger
     "semicolon":false,
     "trailing-comma": false,
     "space-before-function-paren": [true, "always"],
-    "no-unused-expression": false,
+    "no-unused-expression": false, // 未使用的参数或表达式
     "curly": false,
-    "triple-equals": false,
-    "prefer-const": false,
-    "object-literal-shorthand": false
+    "triple-equals": false, // 强制使用 ===
+    "prefer-const": false, // 强制使用const
+    "object-literal-shorthand": false,
+    "radix": false, // 需要parseInt第二个参数
+    "prefer-for-of": false
   }
 }

@@ -60,6 +60,10 @@ export default {
     show: {
       type: Boolean,
       default: false
+    },
+    compressRatio: {
+      type: Number,
+      default: 1
     }
   },
   watch: {
@@ -154,7 +158,7 @@ export default {
 
           ctx3.drawImage(img, 0, 0, imgHeight, imgWidth);
 
-          const base64 = canvas3.toDataURL();
+          const base64 = canvas3.toDataURL("image/png");
           this.imgSrcs = base64;
           this.initCanvas();
         };
@@ -231,11 +235,16 @@ export default {
       canvas2.width = rectWidth;
       canvas2.height = rectHeight;
       ctx2.putImageData(this.imageData, 0, 0);
-      const base64 = canvas2.toDataURL("image/jpeg", 0.7);
-      this.data = this.convertBase64UrlToBlob(base64);
+      let base64;
+      if (this.compressRatio == 1) {
+        base64 = canvas2.toDataURL("image/jpeg", 0.99);
+      } else {
+        base64 = canvas2.toDataURL("image/jpeg", this.compressRatio);
+      };
       this.base64 = base64;
+      let blob = this.convertBase64UrlToBlob(base64);
       console.log(base64)
-      this.$emit("finish", this.base64);
+      this.$emit("finish", blob, this.base64);
     },
     // 获得base64
     // getBase64Url() {

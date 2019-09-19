@@ -32,6 +32,7 @@
         <!-- <div class="preview_btn">长按保存海报</div> -->
       </div>
     </div>
+    <page-bot/>
   </div>
 </template>
 
