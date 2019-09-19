@@ -78,7 +78,7 @@ export default Vue.extend({
       this.imgUrl = getBase64Image(tempImage);
       callback && callback();
     },
-    blobToDataURL(blob: any, callback: any) {
+    blobToDataURL (blob: any, callback: any) {
       let a = new FileReader();
       a.onload = (e: any) => { callback(e.target.result) }
       a.readAsDataURL(blob);

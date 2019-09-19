@@ -12,6 +12,9 @@
     <img class="outer_view" src="@/assets/img/main/bottom_louA.png">
     <img class="outer_view" src="@/assets/img/main/bottom_louB.png">
     <img class="outer_view" src="@/assets/img/main/bottom_moon.png">
+    <img class="outer_view" src="@/assets/img/stageB/pic_frameA.png">
+    <img class="outer_view" src="@/assets/img/stageB/pic_frameB.png">
+    <img class="outer_view" src="@/assets/img/stageB/pic_frameC.png">
     <!-- <transition name="opacity"> -->
       <router-view/>
     <!-- </transition> -->

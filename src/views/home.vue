@@ -49,9 +49,9 @@
           <div class="popup_info" v-if="stages.value == 1">
             <p>1. <span>活动时间：9月20日-9月26日</span></p>
             <p>2.点击地图任意位置即可获取“我和我的祖国”建国70周年限量版定制的海报模板，三种款式选择。</p>
-            <p>3.上传照片，即可制作“我和我的祖国”建国70周年限量版定制海报，活动结束后，通过审核的照片可以参与下一期【圆梦中国】投票活动。</p>
-            <p>4.可随时删除或重新上传照片，可多次生成海报但仅有一张可以参与【圆梦中国】活动哦！</p>
-            <p class="rule_tips" style="margin-top:0;">* 制作海报的照片仅在本次活动中使用，不会令做他用</p>
+            <p>3.上传照片，即可制作“我和我的祖国”建国70周年限量版定制海报，可多次生成，但可选择一张参与下一期【圆梦中国】投票活动。</p>
+            <p>4.参赛作品将在24小时内返回审核结果，审核中的参赛作品可随时更换，一旦审核通过后将不能更换参赛作品。审核未通过的可以重新选择作品上传。</p>
+            <p class="rule_tips" style="margin-top:0;">* 制作海报的照片仅在本次活动中使用，不会另做他用</p>
           </div>
           <div class="popup_info" v-if="stages.value == 2">
             <p>1. <span>活动时间：9月27日-10月7日</span></p>
@@ -418,6 +418,7 @@ export default Vue.extend({
     font-size: 0.3rem;
     color: $black;
     line-height: 0.48rem;
+    text-align: justify;
     & > p:first-child > span {
       font-size: 0.34rem;
       color: $ruleTitleRed;

@@ -89,7 +89,7 @@ export default Vue.extend({
     @extend .fm_ss;
     font-size: 0.38rem;
     color: $exhaust;
-    line-height: 0.8rem;
+    line-height: 0.6rem;
     text-align: center;
     & > span {
       color: $ruleTitleRed;

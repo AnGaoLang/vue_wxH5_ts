@@ -4,15 +4,22 @@
       <img class="mywork_title" src="@/assets/img/stageB/title.png">
       <div class="mywork_main">
         <div class="mywork_list">
-          <div :class="['mywork_item', (item.isEnter & item.isCheck) ? 'mywork_join' : '', (item.isEnter & !item.isCheck) ? 'mywork_verify' : '']" 
+          <div class="mywork_back" @click="goback">
+            <img src="@/assets/img/stageB/upload.png">
+            <span>立即上传</span>
+          </div>
+          <div :class="['mywork_item', 
+                        (item.isEnter & item.isCheck == 1) ? 'mywork_join' : '', 
+                        (item.isEnter & item.isCheck == 0) ? 'mywork_verify' : '',
+                        (item.isEnter & item.isCheck == -1) ? 'mywork_nopass' : '']" 
               v-for="(item, index) in list"
               :key="index"
               :style="{'backgroundImage': `url(${item.imgUrl})`}"
               @click.stop="goPreview(item)">
-                <span v-show="!item.isEnter && !item.isCheck"
-                      :class="['square', item.selected ? 'square_selected' : '']"
-                      @click.stop="item.selected = !item.selected"></span>
-              </div>
+              <span v-show="!item.isEnter && item.isCheck == 0"
+                    :class="['square', item.selected ? 'square_selected' : '']"
+                    @click.stop="item.selected = !item.selected"></span>
+            </div>
         </div>
       </div>
       <div class="mywork_bottom">
@@ -24,7 +31,7 @@
       </div>
     </div>
 
-    <pop-up :show="joinShow" v-on:popToggle="popToggle" tipOne="亲，参赛作品超过上限！"></pop-up>
+    <pop-up :show="joinShow" v-on:popToggle="popToggle" :tipOne="tips"></pop-up>
   </div>
 </template>
 
@@ -39,7 +46,7 @@
     imgUrl: string
     selected?: boolean
     isEnter: boolean
-    isCheck: boolean
+    isCheck: number
   }
 
   export default Vue.extend({
@@ -48,6 +55,7 @@
       return {
         list: [] as IlistItem[],
         joinShow: false,
+        tips: '' as string,
       }
     },
     mounted () {
@@ -78,14 +86,26 @@
       },
       async join () {
         let selectArr = this.list.filter((item) => item.selected);
+        let join = this.list.filter((item) => item.isEnter && item.isCheck == 1);
+        if (join.length >= 1) {
+          this.joinShow = true;
+          this.tips = '您已有参赛作品，请勿重复参赛！';
+          selectArr.forEach((item) => item.selected = false);
+          return;
+        };
         if (selectArr.length > 1) {
-          this.joinShow = true
+          this.joinShow = true;
+          this.tips = '参赛作品超过上限！';
         } else if (selectArr.length == 1) {
           let res = await joinMyWorks({
             userId: selectArr[0].userId,
             worksId: selectArr[0].worksId,
           });
-          res && this.getList();
+          if (res) {
+            this.joinShow = true;
+            this.tips = '工作人员将在24小时内审核您的参赛作品，如审核通过则不可更换参赛作品。每人仅可有一张作品参赛哦！';
+            this.getList();
+          }
         };
         selectArr.forEach((item) => item.selected = false);
       },
@@ -100,6 +120,9 @@
             memberNum: this.list[0].memberId
           }
         })
+      },
+      goback () {
+        this.$router.replace('/uploadPic');
       }
     }
   })
@@ -129,6 +152,24 @@
 .mywork_main {
   padding: 7% 3% 0;
   height: 85%;
+}
+
+.mywork_back {
+  @extend .pr;
+  margin-right: 0.2rem;
+  width: 2rem;
+  height: 2.7rem;
+  background: $white;
+  border-radius: 10px;
+  opacity: 0.5;
+  font-size: 0.28rem;
+  text-align: center;
+  & > img {
+    @extend .blo;
+    margin: 0.6rem auto 0.5rem;
+    width: 0.7rem;
+    height: 0.7rem;
+  }
 }
 
 .mywork_list {
@@ -203,6 +244,13 @@
   @extend .pa;
   @extend .wh100;
   background: url('../../assets/img/stageB/verify_mask.png') 0 0/100% 100% no-repeat;
+}
+
+.mywork_nopass:after {
+  content: '';
+  @extend .pa;
+  @extend .wh100;
+  background: url('../../assets/img/stageB/nopass_mask.png') 0 0/100% 100% no-repeat;
 }
 
 .square_selected:after {
