@@ -9,24 +9,24 @@
 </template>
 
 <script>
-import exif from "exif-js";
+import exif from 'exif-js';
 export default {
   data () {
     return {
       picShow: false,
       one: false, // 单指还是双指,不然会出现双指缩放与单指移动互相影响的情况
-      imgSrcs: "", // canvas渲染的图片
+      imgSrcs: '', // canvas渲染的图片
       ctx: {}, // canvas实例
       img: {}, // img实例
       width: 0, // canvas宽
       height: 0, // canvas高
-      imgWidth: 0, //图片宽度
+      imgWidth: 0, // 图片宽度
       imgHeight: 0, // 图片高度
       startScreen: undefined, // 触摸点坐标
       endScreen: { x: 0, y: 0 }, // 结束触摸点坐标
       posImg: { x: 0, y: 0 }, // 照片移动的距离
       imageData: {}, // 裁剪区域的canvas信息值
-      base64: "", // 头像的base64
+      base64: '', // 头像的base64
       data: [], // 头像的二进值
       isMove: true, // 是否能拖动图片
       widthRate: 1, // 图片缩放比例
@@ -81,7 +81,7 @@ export default {
     },
     // 确认按钮，裁剪图像
     confirm () {
-      this.isMove = false;;
+      this.isMove = false;
       const rectWidth = this.width * 0.8;
       // const rectHeight = this.height * 0.8;
       const rectHeight = this.clipWHRatio ? (rectWidth / this.clipWHRatio) : rectWidth;
@@ -124,7 +124,7 @@ export default {
           // this.initCanvas();
           // 获得图片方向
           exif.getData(img, () => {
-            this.orientation = exif.getTag(img, "Orientation");
+            this.orientation = exif.getTag(img, 'Orientation');
           });
           // 6说明是正向的手机相片
           if (this.orientation == 6) {
@@ -136,8 +136,8 @@ export default {
           }
           const width = this.$el.getBoundingClientRect().width;
           const height = this.$el.getBoundingClientRect().height;
-          const canvas3 = document.createElement("canvas");
-          const ctx3 = canvas3.getContext("2d");
+          const canvas3 = document.createElement('canvas');
+          const ctx3 = canvas3.getContext('2d');
           const fwidth = img.height;
           const fheight = img.width;
 
@@ -158,7 +158,7 @@ export default {
 
           ctx3.drawImage(img, 0, 0, imgHeight, imgWidth);
 
-          const base64 = canvas3.toDataURL("image/png");
+          const base64 = canvas3.toDataURL('image/png');
           this.imgSrcs = base64;
           this.initCanvas();
         };
@@ -171,7 +171,7 @@ export default {
         // 宽高等于容器宽高
         C.width = this.$el.getBoundingClientRect().width;
         C.height = this.$el.getBoundingClientRect().height;
-        const ctx = C.getContext("2d");
+        const ctx = C.getContext('2d');
 
         const img = new Image();
 
@@ -181,7 +181,7 @@ export default {
         this.width = C.width;
         this.height = C.height;
         let rate = 1;
-        
+
         img.onload = () => {
           rate = img.width / (C.width * 0.8);
           const rectWidth = this.width * 0.8;
@@ -214,14 +214,14 @@ export default {
       // const rectY = (this.height - rectWidth) / 2;
       const rectY = (this.$el.getBoundingClientRect().height - rectHeight) / 3;
 
-      this.ctx.fillStyle = "rgba(0,0,0,.3)";
+      this.ctx.fillStyle = 'rgba(0,0,0,.3)';
       this.ctx.fillRect(0, 0, this.width, rectY);
       this.ctx.fillRect(0, rectY, rectX, rectHeight);
       this.ctx.fillRect(rectX + rectWidth, rectY, rectX, rectHeight);
       this.ctx.fillRect(0, rectY + rectHeight, this.width, this.height);
 
-      this.ctx.strokeStyle = "#fff";
-      this.ctx.lineWidth = "2";
+      this.ctx.strokeStyle = '#fff';
+      this.ctx.lineWidth = '2';
       this.ctx.strokeRect(rectX, rectY, rectWidth, Math.ceil(rectHeight));
     },
     // 清楚画布
@@ -230,21 +230,21 @@ export default {
     },
     // 生成base64
     makeHeader (rectWidth, rectHeight) {
-      const canvas2 = document.createElement("canvas");
-      const ctx2 = canvas2.getContext("2d");
+      const canvas2 = document.createElement('canvas');
+      const ctx2 = canvas2.getContext('2d');
       canvas2.width = rectWidth;
       canvas2.height = rectHeight;
       ctx2.putImageData(this.imageData, 0, 0);
       let base64;
       if (this.compressRatio == 1) {
-        base64 = canvas2.toDataURL("image/jpeg", 0.99);
+        base64 = canvas2.toDataURL('image/jpeg', 0.99);
       } else {
-        base64 = canvas2.toDataURL("image/jpeg", this.compressRatio);
+        base64 = canvas2.toDataURL('image/jpeg', this.compressRatio);
       };
       this.base64 = base64;
       let blob = this.convertBase64UrlToBlob(base64);
       console.log(base64)
-      this.$emit("finish", blob, this.base64);
+      this.$emit('finish', blob, this.base64);
     },
     // 获得base64
     // getBase64Url() {
@@ -256,14 +256,14 @@ export default {
     // },
     // base64转blob
     convertBase64UrlToBlob (urlData) {
-      var bytes = window.atob(urlData.split(",")[1]); //去掉url的头，并转换为byte
-      //处理异常,将ascii码小于0的转换为大于0
-      var ab = new ArrayBuffer(bytes.length);
-      var ia = new Uint8Array(ab);
-      for (var i = 0; i < bytes.length; i++) {
+      let bytes = window.atob(urlData.split(',')[1]); // 去掉url的头，并转换为byte
+      // 处理异常,将ascii码小于0的转换为大于0
+      let ab = new ArrayBuffer(bytes.length);
+      let ia = new Uint8Array(ab);
+      for (let i = 0; i < bytes.length; i++) {
         ia[i] = bytes.charCodeAt(i);
       }
-      return new Blob([ab], { type: "image/jpeg" });
+      return new Blob([ab], { type: 'image/jpeg' });
     },
     // bolb转file对象
     convertBlobUrlToFile (blob) {
@@ -271,9 +271,9 @@ export default {
     },
     bindTouchEvents () {
       if (this.$refs.canvas) {
-        this.$refs.canvas.addEventListener("touchstart", this.handleTouchStart);
-        this.$refs.canvas.addEventListener("touchmove", this.handleTouchMove);
-        this.$refs.canvas.addEventListener("touchend", this.handleTouchEnd);
+        this.$refs.canvas.addEventListener('touchstart', this.handleTouchStart);
+        this.$refs.canvas.addEventListener('touchmove', this.handleTouchMove);
+        this.$refs.canvas.addEventListener('touchend', this.handleTouchEnd);
       }
     },
     handleTouchStart (e) {

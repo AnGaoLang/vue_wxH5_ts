@@ -26,7 +26,8 @@
       <div class="mywork_bottom">
         <div>
           <button type="button" @click="dele">删除</button>
-          <button type="button" @click="join">参赛</button>
+          <button v-if="stages.value == 1" type="button" @click="join">参赛</button>
+          <button v-if="stages.value == 2" type="button" @click="goThumbs">返回</button>
         </div>
         <p class="mywork_tips">仅可选择一张海报参赛哦！</p>
       </div>
@@ -60,6 +61,7 @@
         tips: '' as string,
       }
     },
+    inject: ['stages'],
     mounted () {
       this.getList();
     },
@@ -125,6 +127,9 @@
       },
       goback () {
         this.$router.replace('/uploadPic');
+      },
+      goThumbs () {
+        this.$router.replace('/thumbsUp');
       }
     }
   })

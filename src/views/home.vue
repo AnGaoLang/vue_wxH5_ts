@@ -52,14 +52,15 @@
             <p>2.点击地图任意位置即可获取“我和我的祖国”建国70周年限量版定制的海报模板，三种款式选择。</p>
             <p>3.上传照片，即可制作“我和我的祖国”建国70周年限量版定制海报，可多次生成，但可选择一张参与下一期【圆梦中国】投票活动。</p>
             <p>4.参赛作品将在24小时内返回审核结果，审核中的参赛作品可随时更换，一旦审核通过后将不能更换参赛作品。审核未通过的可以重新选择作品上传。</p>
-            <p>5.请自觉遵守互联网相关的政策法规，严禁上传色情、暴力、敏感、反动图片。</p>
+            <p>5.请上传原创的人像照片，为祖国打call！</p>
+            <p>6.请自觉遵守互联网相关的政策法规，严禁上传色情、暴力、敏感、反动图片。</p>
             <p class="rule_tips" style="margin-top:0;">* 制作海报的照片仅在本次活动中使用，不会另做他用</p>
           </div>
           <div class="popup_info" v-if="stages.value == 2">
             <p>1. <span>活动时间：9月27日-10月7日</span></p>
             <p>2. 每位用户每天可进入活动页投出3票，须投给三个不同作品；</p>
             <p>3. 票数达到100即可参与“圆梦礼包”抽奖活动，惊喜大礼送不停！</p>
-            <p class="rule_tips">* 制作海报的照片仅在本次活动中使用，不会令做他用</p>
+            <!-- <p class="rule_tips">* 制作海报的照片仅在本次活动中使用，不会令做他用</p> -->
           </div>
           <div class="close" @click="goStage">关闭</div>
         </div>
@@ -127,7 +128,7 @@ export default Vue.extend({
           fullLock: false,
           halfLock: true,
           isClick: false,
-          link: '',
+          link: '/thumbsUp',
         }
       ],
       currentItem: {}
@@ -135,7 +136,7 @@ export default Vue.extend({
   },
   inject: ['stages'],
   mounted () {
-    this.getSubStatus();
+    // this.getSubStatus();
     this.todayFirst();
     this.btnMask();
     this.$nextTick(() => adaptPt(this.$refs.top, this.$refs.bottom));

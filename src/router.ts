@@ -37,6 +37,11 @@ let router = new Router({
       path: '/preview',
       name: 'preview',
       component: () => import(/* webpackChunkName: "preview" */ './views/stageB/preview.vue'),
+    },
+    {
+      path: '/thumbsUp',
+      name: 'thumbsUp',
+      component: () => import(/* webpackChunkName: "thumbsUp" */ './views/stageC/thumbsUp.vue'),
     }
   ],
 });
@@ -63,29 +68,6 @@ router.afterEach(async (to) => {
     ]
   });
 
-  // wx.ready(() => {
-  //   wx.hideMenuItems({
-  //     menuList: [ 'menuItem:copyUrl' ]
-  //   });
-  //   const toFriend = {
-  //     title: '我和我的祖国', // 分享标题
-  //     desc: '团聚你我，圆梦中国。参与活动，赢惊喜大奖!', // 分享描述
-  //     link: 'http://hhlqr.whcewei.com/opc/ms/wxForeign/r?fsr=toZhongqiu', // 分享链接
-  //     imgUrl: 'https://hhlqr.whcewei.com/nd/static/share.jpg', // 分享图标
-  //     success: () => {}
-  //   };
-  //   const toCircle = {
-  //     title: '我和我的祖国', // 分享标题
-  //     link: 'http://hhlqr.whcewei.com/opc/ms/wxForeign/r?fsr=toZhongqiu', // 分享链接
-  //     imgUrl: 'https://hhlqr.whcewei.com/nd/static/share.jpg', // 分享图标
-  //     success: () => {}
-  //   };
-  //   // wx.onMenuShareAppMessage(toFriend);
-  //   // wx.onMenuShareTimeline(toCircle);
-  //   wx.updateAppMessageShareData(toFriend);
-  //   wx.updateTimelineShareData(toCircle);
-  // });
-
   wx.ready(() => {
     wx.hideMenuItems({
       menuList: [ 'menuItem:copyUrl' ]
@@ -96,13 +78,13 @@ router.afterEach(async (to) => {
       desc: '《我和我的祖国》系列活动第二期，和祖国同框，筑梦中国！', // 分享描述
       link: 'https://wx.hhl1916.com/opc/ms/wxForeign/r?fsr=toZhongqiu', // 分享链接
       imgUrl: 'https://qr.hhl1916.com/nd/static/share.jpg', // 分享图标
-      success: () => {}
+      // success: () => {}
     };
     const toCircle = {
       title: '百万楼币还不够？黄鹤宝盒等你拿！', // 分享标题
       link: 'https://wx.hhl1916.com/opc/ms/wxForeign/r?fsr=toZhongqiu', // 分享链接
       imgUrl: 'https://qr.hhl1916.com/nd/static/share.jpg', // 分享图标
-      success: () => {}
+      // success: () => {}
     };
 
     wx.onMenuShareAppMessage(toFriend);

@@ -48,7 +48,7 @@
         const nowDate = new Date().getTime();
         const stageATime = new Date('2019/9/12 00:00:00').getTime();
         const stageBTime = new Date('2019/9/20 00:00:00').getTime();
-        const stageCTime = new Date('2019/09/27 00:00:00').getTime();
+        const stageCTime = new Date('2019/09/21 00:00:00').getTime();
         const stageEnd = new Date('2019/10/08 00:00:00').getTime();
         if (nowDate >= stageATime && nowDate < stageBTime) {
           this.stages.value = 0;
