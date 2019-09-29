@@ -144,6 +144,12 @@
   })
 </script>
 
+<style>
+body, html {
+  overflow: auto;
+  background: #c72930;
+}
+</style>
 <style lang="scss" scoped>
 .pic_container {
   @extend .wh100;

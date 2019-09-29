@@ -6,25 +6,33 @@
     </div>
     <div class="thumbs_main">
       <div class="thumbs_input">
-        <input type="number" placeholder="请输入楼主编号" v-model="curMemberId">
+        <input type="number" placeholder="请输入用户编号" v-model="curMemberId">
         <span @click="search">
           <img src="@/assets/img/stageC/search.png">
         </span>
       </div>
-      <div class="thumbs_box" @scroll="scrollThum">
+      <div class="thumbs_box" @scroll.stop="scrollThum">
         <div class="thumbs_item" 
              v-for="(item, index) in thumbsList" 
-             :key="index"
-             :style="{'backgroundImage': `url(${item.imgUrl})`}">
+             :key="item.memberId"
+             :style="{'backgroundImage': `url(${item.imgUrl})`}"
+             @click="previewPic = item.imgUrl">
               <div class="thumbs_item_top">
-                <p>编号:{{item.memberId}}</p>
+                <!-- <p>编号:{{item.memberId}}</p> -->
+                <p>NO.{{index + 1}}</p>
                 <p>{{item.likeNum}}票</p>
               </div>
-              <div class="thumbs_item_bot" @click="clickLike(item)">
+              <div class="thumbs_item_id">
+                <p>用户编号:{{item.memberId}}</p>
+              </div>
+              <div class="thumbs_item_bot" @click.stop="clickLike(item)">
                 <img v-show="!item.islike" src="@/assets/img/stageC/thumbs.png">
                 <img v-show="item.islike" src="@/assets/img/stageC/thumbs_light.png">
               </div>
              </div>
+             <div class="thumbs_item_place"></div>
+             <div class="thumbs_item_place"></div>
+             <div class="thumbs_item_place"></div>
       </div>
       <div class="thumbs_bottom">
         <button type="button" @click="goMyWork">我的作品</button>
@@ -32,7 +40,11 @@
       </div>
       <div class="bot_mask"></div>
     </div>
+    <div class="preview_pic" v-show="previewPic" @click="previewPic = ''">
+      <img :src="previewPic">
+    </div>
     <page-bot style="margin-top: 0.6rem"/>
+    <pop-up :show="joinShow" v-on:popToggle="popToggle" :tipOne="tips"></pop-up>
   </div>
 </template>
 <script lang="ts">
@@ -59,14 +71,17 @@ export default Vue.extend({
       rowCount: 0,
       isScroll: false,
       thumbsList: [] as IthumbsList[],
-      curMemberId: ''
+      curMemberId: '',
+      joinShow: false,
+      tips: '',
+      previewPic: ''
     }
   },
   mounted () {
     this.getList('', this.pageNum);
   },
   methods: {
-    async getList (memberId: string = '', pageNum, nextPage: boolean = false) {
+    async getList (memberId: string = '', pageNum: number, nextPage: boolean = false) {
       console.log(pageNum)
       let res = await findAll({
         memberId,
@@ -84,15 +99,21 @@ export default Vue.extend({
       };
     },
     async clickLike (item: IthumbsList) {
-      if (item.islike) return;
       let res = await like({
         userId: item.userId,
         worksId: item.worksId
       });
-      if (res) {
-        item.islike = true;
-        item.likeNum++;
-      };
+      if (res.code != 504) {
+        item.islike = !item.islike;
+        item.islike ? item.likeNum++ : item.likeNum--;
+        this.thumbsList.sort((prev, next) =>  next.likeNum - prev.likeNum);
+      } else {
+        this.joinShow = true;
+        this.tips = res.msg;
+      }
+    },
+    popToggle (bool: boolean) {
+      this.joinShow = bool;
     },
     scrollThum (e) {
       if (this.isScroll) return;
@@ -100,9 +121,7 @@ export default Vue.extend({
       const scrollH = curDom.scrollHeight;
       const scrollTop = curDom.scrollTop;
       const offsetH = curDom.offsetHeight;
-      console.log(123)
       if (this.thumbsList.length < this.rowCount && (offsetH + scrollTop) >= (scrollH - 10)) {
-        console.log(456)
         this.isScroll = true;
         this.pageNum++;
         this.getList('', this.pageNum, true);
@@ -181,25 +200,28 @@ export default Vue.extend({
     background: #f69655;
     cursor: pointer;
     & > img {
-      height: 70%;
+      width: 0.48rem;
+      height: 0.48rem;
     }
   }
 }
 
 .thumbs_box {
   margin-top: 0.28rem;
+  // padding-bottom: 1.1rem;
   align-content: flex-start;
   flex-wrap: wrap;
   flex-grow: 1;
-  overflow-y: auto;
+  overflow-y: scroll;
+  & > .thumbs_item_place {
+    width: 2.05rem;
+    height: 1.1rem;
+  }
   & > .thumbs_item:nth-child(1),& > .thumbs_item:nth-child(2),& > .thumbs_item:nth-child(3) {
     margin-top: 0;
   }
   & > .thumbs_item:nth-child(3n) {
     margin-right: 0;
-  }
-  & > .thumbs_item:last-child {
-    margin-bottom: 1.05rem;
   }
 }
 
@@ -216,21 +238,33 @@ export default Vue.extend({
   border-radius: 6px;
 }
 
-.thumbs_item_top {
+.thumbs_item_id,.thumbs_item_top {
   @extend .pa;
   @extend .w100;
-  height: 0.6rem;
   top: 0;
   left: 0;
-  padding-top: 0.05rem;
-  padding-left: 0.1rem;
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
+  padding: 0.02rem 0.05rem;
+  display: flex;
+  justify-content: space-between;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  color: $thumbsuoRed;
+  font-weight: bold;
   background: rgba(237, 129, 78, 0.7);
   & > p {
     @extend .fm_pf;
     font-size: 0.16rem;
   }
+}
+
+.thumbs_item_id {
+  top: auto;
+  bottom: 0;
+  height: auto;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 
 .thumbs_item_bot {
@@ -285,5 +319,24 @@ export default Vue.extend({
   background: linear-gradient(to bottom, rgba(252, 237, 225, 0) 0%,rgba(252, 237, 225, 0.8) 40%, rgba(252, 237, 225, 1)  80%);;
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
+}
+
+.preview_pic {
+  @extend .pf;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background: rgba(0, 0, 0, 0.8);
+  & > img {
+    @extend .pa;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    height: auto;
+    border-radius: 25px;
+  }
 }
 </style>

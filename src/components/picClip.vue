@@ -3,8 +3,10 @@
     <canvas ref="canvas"></canvas>
     <div class="clip_bottom">
       <span @click="cancel">取消</span>
+      <!-- <span @click="rotate">旋转</span> -->
       <span @click="confirm">确认</span>
     </div>
+    <canvas style="position:fixed;top:99999px;left:99999px;" ref='demo'></canvas>
   </div>
 </template>
 
@@ -46,6 +48,7 @@ export default {
         x2: 0,
         y2: 0
       },
+      rotateImg: ''
     };
   },
   props: {
@@ -78,6 +81,7 @@ export default {
       this.imgDirection();
       this.bindTouchEvents();
       this.isMove = true;
+      // this.initRotateImg();
     },
     // 确认按钮，裁剪图像
     confirm () {
@@ -110,6 +114,53 @@ export default {
     cancel () {
       this.picShow = false;
       this.$emit('hide', false);
+    },
+    initRotateImg () {
+      this.rotateImg = new Image();
+      this.rotateImg.src = this.imgSrc;
+
+      this.rotateImg.onload = () => {
+        const canvas3 = this.$refs.demo;
+        const ctx3 = canvas3.getContext('2d');
+        const imgWidth = this.rotateImg.width;
+        const imgHeight = this.rotateImg.height;
+        canvas3.width = imgWidth;
+        canvas3.height = imgHeight;
+        ctx3.drawImage(this.rotateImg, 0, 0, imgHeight, imgHeight);
+      }
+    },
+    rotate () {
+      const canvas3 = this.$refs.demo;
+      const ctx3 = canvas3.getContext('2d');
+      ctx3.clearRect( 0, 0, this.rotateImg.width, this.rotateImg.height);
+
+      ctx3.translate(0.5 * canvas3.width, 0.5 * canvas3.height);
+      ctx3.rotate(90 * (Math.PI / 180));
+      ctx3.translate(-0.5 * canvas3.width, -0.5 * canvas3.height);
+      
+      ctx3.drawImage(this.rotateImg, 0, 0, this.rotateImg.width, this.rotateImg.height);
+      
+      
+      canvas3.toBlob((blob) => {
+        const mainCanvas = this.$refs.canvas;
+        const img = new Image();
+        img.src = URL.createObjectURL(blob);
+        img.onload = () => {
+          const rate = img.width / (mainCanvas.width * 0.8);
+          const rectWidth = this.width * 0.8;
+          const rectHeight = this.clipWHRatio ? (rectWidth / this.clipWHRatio) : rectWidth;
+          const rectX = this.width * 0.1;
+          const rectY = (this.$el.getBoundingClientRect().height - rectHeight) / 3;
+          this.imgWidth = img.width / rate;
+          this.imgHeight = img.height / rate;
+          this.posImg = { x: rectX, y: rectY };
+
+          this.drawImg(this.ctx, img, rectX, rectY, this.imgWidth, this.imgHeight);
+          // 裁剪框
+          this.drawRect();
+          this.img = img;
+        }
+      })
     },
     // 判断图片方向
     imgDirection () {
@@ -158,7 +209,7 @@ export default {
 
           ctx3.drawImage(img, 0, 0, imgHeight, imgWidth);
 
-          const base64 = canvas3.toDataURL('image/png');
+          const base64 = canvas3.toDataURL('image/jpg');
           this.imgSrcs = base64;
           this.initCanvas();
         };

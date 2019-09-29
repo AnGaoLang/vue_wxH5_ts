@@ -18,7 +18,7 @@ Axios.interceptors.request.use(
 
 Axios.interceptors.response.use(
   (response) => {
-    if (response.data.code && response.data.code === 501) {
+    if (response.data.code && (response.data.code === 501 || response.data.code === 504)) {
       // VM.$loading.hide();
       return response.data;
     };

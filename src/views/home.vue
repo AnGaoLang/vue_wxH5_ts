@@ -58,8 +58,10 @@
           </div>
           <div class="popup_info" v-if="stages.value == 2">
             <p>1. <span>活动时间：9月27日-10月7日</span></p>
-            <p>2. 每位用户每天可进入活动页投出3票，须投给三个不同作品；</p>
-            <p>3. 票数达到100即可参与“圆梦礼包”抽奖活动，惊喜大礼送不停！</p>
+            <p>2. 每位楼主每天拥有10次投票机会，每天对同一作品只能投1票哦；</p>
+            <p>3. 楼楼将在得票数达到300的楼主中，随机抽取500位楼主送出“黄鹤宝盒”大礼；</p>
+            <p>4. 楼楼会在10月11日的推文中公布获奖名单，一定不要错过哟；</p>
+            <p>5. 一旦发现任何形式的作弊行为，将被取消抽奖资格。</p>
             <!-- <p class="rule_tips">* 制作海报的照片仅在本次活动中使用，不会令做他用</p> -->
           </div>
           <div class="close" @click="goStage">关闭</div>
@@ -67,15 +69,15 @@
       </template>
     </pop-up>
 
-    <pop-up :show="resultShow">
+    <pop-up :show="false">
       <template>
         <div class="popup_result">
           <div class="result_bg">
             <img src="@/assets/img/main/result.png">
-            <p>恭喜你！获得<span>777楼币</span>！</p>
+            <p>恭喜你！获得<span>286楼币</span>！</p>
             <p>（于1~2个工作日内到账）</p>
           </div>
-          <div class="close" @click="this.resultShow = false;">关闭</div>
+          <div class="close" @click="resultShow = false;">关闭</div>
         </div>
       </template>
     </pop-up>
@@ -136,7 +138,7 @@ export default Vue.extend({
   },
   inject: ['stages'],
   mounted () {
-    // this.getSubStatus();
+    this.getSubStatus();
     this.todayFirst();
     this.btnMask();
     this.$nextTick(() => adaptPt(this.$refs.top, this.$refs.bottom));

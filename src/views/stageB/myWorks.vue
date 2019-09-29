@@ -3,9 +3,9 @@
     <div class="mywork_border">
       <img class="mywork_title" src="@/assets/img/stageB/title.png">
       <div class="mywork_main">
-        <p class="mywork_ttips">您离大奖还差最后一步，选择一张满意作品参赛，就有机会获得黄鹤宝盒！</p>
-        <div class="mywork_list">
-          <div class="mywork_back" @click="goback">
+        <p class="mywork_ttips">{{stages.value == 1 ? '您离大奖还差最后一步，选择一张满意作品参赛，就有机会获得黄鹤宝盒！' : ''}}</p>
+        <div class="mywork_list" :style="{'height': stages.value == 2 ? '83%' : '90%'}">
+          <div class="mywork_back" @click="goback" v-if="stages.value == 1">
             <img src="@/assets/img/stageB/upload.png">
             <span>立即上传</span>
           </div>
@@ -17,11 +17,15 @@
               :key="index"
               :style="{'backgroundImage': `url(${item.imgUrl})`}"
               @click.stop="goPreview(item)">
+              <div v-if="stages.value == 2 && (item.isEnter & item.isCheck == 1)" class="join_top">
+                <p>用户编号:{{item.memberId}}</p>
+              </div>
               <span v-show="!item.isEnter && item.isCheck == 0"
                     :class="['square', item.selected ? 'square_selected' : '']"
                     @click.stop="item.selected = !item.selected"></span>
             </div>
         </div>
+        <p v-if="stages.value == 2" class="mywork_warn">活动征集投稿照片作品仅用于此次活动，不做其他用途</p>
       </div>
       <div class="mywork_bottom">
         <div>
@@ -29,7 +33,7 @@
           <button v-if="stages.value == 1" type="button" @click="join">参赛</button>
           <button v-if="stages.value == 2" type="button" @click="goThumbs">返回</button>
         </div>
-        <p class="mywork_tips">仅可选择一张海报参赛哦！</p>
+        <p class="mywork_tips" v-if="stages.value == 1">仅可选择一张海报参赛哦！</p>
       </div>
       <page-bot/>
     </div>
@@ -213,6 +217,16 @@
   }
 }
 
+.mywork_warn {
+  height: 7%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: $mywordBg;
+  font-size: 0.26rem;
+  color: $qrOrange;
+}
+
 .mywork_bottom {
   padding: 0 0.3rem;
   height: 15%;
@@ -280,4 +294,22 @@
   background: url('../../assets/img/stageB/select.png') 0 0/100% 100% no-repeat;
 }
 
+.join_top {
+  @extend .pa;
+  @extend .w100;
+  top: 0;
+  left: 0;
+  padding: 0.02rem 0.05rem;
+  display: flex;
+  justify-content: space-between;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  color: $thumbsuoRed;
+  font-weight: bold;
+  background: rgba(237, 129, 78, 0.7);
+  & > p {
+    @extend .fm_pf;
+    font-size: 0.16rem;
+  }
+}
 </style>
