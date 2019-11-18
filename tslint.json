@@ -26,6 +26,7 @@
     "prefer-const": false, // 强制使用const
     "object-literal-shorthand": false,
     "radix": false, // 需要parseInt第二个参数
-    "prefer-for-of": false
+    "prefer-for-of": false,
+    "arrow-parens": false // 箭头函数单参数无需括号
   }
 }
